@@ -1,0 +1,15 @@
+{
+  "name": "cospik",
+  "version": "1.0.0",
+  "description": "An app that allows a university admin to pick a course for students",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "reactjs"
+  ],
+  "author": "Ayodeji",
+  "license": "MIT"
+}
