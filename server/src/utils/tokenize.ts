@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const token = (admin: String, secretKey: String) => {
   const authToken = jwt.sign(
     admin, secretKey,
-    { expiresIn: '12h'},
+    { expiresIn: '1h'},
   );
 
   return authToken;
