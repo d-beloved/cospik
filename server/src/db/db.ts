@@ -9,7 +9,6 @@ const queries = (query) => {
   const pool = new Pool(connectionString);
   (async function() {
     const client = await pool.connect();
-    // console.log('I am here');
     await client.query(query);
     client.release();
   })()

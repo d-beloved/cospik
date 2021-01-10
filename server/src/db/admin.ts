@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 const saltRounds: Number = 10;
-const adminPswd: String = 'adminpassword';
+const adminPswd: String = process.env.ADMIN_PSWD;
 const hashPassword: String = bcrypt.hashSync(adminPswd, saltRounds);
 
 const adminTable = `
