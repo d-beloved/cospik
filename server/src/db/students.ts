@@ -7,12 +7,13 @@ const studentTable = `
   );
 
   CREATE TABLE students (
-    student_id serial PRIMARY KEY,
+    student_id uuid DEFAULT uuid_generate_v4 (),
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     status student_status NOT NULL DEFAULT 'not enrolled',
-    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (student_id)
   );
 `;
 

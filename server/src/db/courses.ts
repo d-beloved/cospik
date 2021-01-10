@@ -2,9 +2,10 @@ const courseTable = `
   DROP TABLE IF EXISTS courses CASCADE;
 
   CREATE TABLE courses (
-    course_id serial PRIMARY KEY,
+    course_id uuid DEFAULT uuid_generate_v4 (),
     course_name VARCHAR(255) NOT NULL,
-    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (course_id)
   );
 `;
 

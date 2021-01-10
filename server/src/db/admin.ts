@@ -6,11 +6,14 @@ const hashPassword: String = bcrypt.hashSync(adminPswd, saltRounds);
 
 const adminTable = `
   DROP TABLE IF EXISTS admin CASCADE;
+  CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
   CREATE TABLE admin (
-    ID serial PRIMARY KEY,
+    ID uuid DEFAULT uuid_generate_v4 (),
     username VARCHAR(30) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (ID)
   );
 
   INSERT INTO admin (username, password)
