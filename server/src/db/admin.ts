@@ -14,7 +14,7 @@ const adminTable = `
   );
 
   INSERT INTO admin (username, password)
-  VALUES('admin', ${hashPassword});
+  VALUES('admin', '${hashPassword}');
 `;
 
 export default adminTable;

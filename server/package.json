@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.ts",
+    "db-migrate": "ts-node ./src/db/db.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
