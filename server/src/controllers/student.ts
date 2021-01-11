@@ -87,15 +87,15 @@ class StudentController {
                 message: 'Student not found!',
               });
             }
-            return res.status(200).json({
+            return res.status(200).send({
               message: 'Student returned',
-              ride: student.rows[0],
+              student: student.rows[0],
             });
           })
           .catch((err) => {
             client.release();
             if (err) {
-              res.status(500).json({
+              res.status(500).send({
                 message: 'Something went wrong',
                 err
               });
@@ -122,15 +122,15 @@ class StudentController {
         })
           .then((updatedStudent) => {
             client.release();
-            return res.status(200).json({
+            return res.status(200).send({
               message: 'Student name updated',
-              ride: updatedStudent.rows[0],
+              student: updatedStudent.rows[0],
             });
           })
           .catch((err) => {
             client.release();
             if (err) {
-              res.status(500).json({
+              res.status(500).send({
                 message: 'Something went wrong',
                 err
               });
@@ -139,5 +139,81 @@ class StudentController {
       });
   }
 
-  
+  static enrollStudentForCourse(req, res) {
+    // query to check if the student is enrolled for the course already
+    const checkStudentCourse = `SELECT * FROM student_courses
+                                  WHERE student_id = $1 AND course_id = $2`;
+
+    const enrollQuery = `INSERT INTO student_courses (student_id, course_id)
+                            VALUES ($1, $2)`;
+
+    pool.connect()
+      .then((client) => {
+        client.query({
+          text: checkStudentCourse,
+          values: [req.body.student_id, req.body.course_id]
+        })
+          .then((studentCourse) => {
+            client.release();
+            if(!studentCourse.rows[0]) {
+              pool.connect()
+                .then((client)=> {
+                  client.query({
+                    text: enrollQuery,
+                    values: [req.body.student_id, req.body.course_id]
+                  })
+                    .then((enrolled) => {
+                      client.release();
+                      return res.status(200).send({
+                        message: 'Student enrolled for course successfully',
+                        enrolled: enrolled.rows[0],
+                      });
+                    })
+                    .catch((err) => {
+                      client.release();
+                      if (err) {
+                        res.status(500).send({
+                          message: 'Something went wrong',
+                          err
+                        });
+                      }
+                    });
+                });
+            } else {
+                return res.status(200).send({
+                  message: 'Student is already enrolled for course'
+                });
+            }
+          })
+      })
+  }
+
+  static removeCourseForStudent(req, res) {
+    const unenrollQuery = `DELETE FROM student_courses
+                            WHERE student_id = $1 AND course_id = $2`;
+
+    pool.connect()
+      .then((client)=> {
+        client.query({
+          text: unenrollQuery,
+          values: [req.body.student_id, req.body.course_id]
+        })
+          .then((unenrolled) => {
+            client.release();
+            return res.status(200).send({
+              message: 'Student unenrolled for course successfully',
+              unenrolled: unenrolled.rows[0],
+            });
+          })
+          .catch((err) => {
+            client.release();
+            if (err) {
+              res.status(500).send({
+                message: 'Something went wrong',
+                err
+              });
+            }
+          });
+      });
+  }
 }
