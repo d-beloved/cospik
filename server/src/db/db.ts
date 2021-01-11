@@ -7,11 +7,14 @@ import studentCourse from './studentCourses';
 
 const queries = (query) => {
   const pool = new Pool(connectionString);
-  (async function() {
+  ;(async () => {
     const client = await pool.connect();
-    await client.query(query);
-    client.release();
-  })()
+    try {
+      await client.query(query);
+    } finally {
+    client.release()
+  }
+  })().catch(err => console.log(err.stack))
 };
 
 queries(`${adminDB}${studentDB}${courseDB}${studentCourse}`);

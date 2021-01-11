@@ -48,6 +48,7 @@ class AdminController {
             });
           })
           .catch((err) => {
+            client.release();
             if (err) {
               res.status(400).send({
                 message: 'Sorry, please try again',
@@ -114,6 +115,7 @@ class AdminController {
             }
           })
           .catch((err) => {
+            client.release();
             if (err) {
               res.status(400).send({ message: 'An error occurred', success: false, err });
             }

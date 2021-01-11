@@ -7,7 +7,7 @@ class StudentController {
 
   static createStudent(req, res) {
     const studentQuery = `INSERT INTO students (firstname, lastname, email)
-                          VALUES ($1, $2)
+                          VALUES ($1, $2, $3)
                           RETURNING *`;
 
     pool.connect()
@@ -70,6 +70,74 @@ class StudentController {
   }
 
   static getStudent(req, res) {
+    const studentId = req.params.studentId;
+    const getStudentQuery = `SELECT * from students
+                              WHERE student_id::text = $1`;
 
+    pool.connect()
+      .then((client) => {
+        client.query({
+          text: getStudentQuery,
+          values: [studentId]
+        })
+          .then((student) => {
+            client.release();
+            if (!student.rows[0]) {
+              return res.status(404).send({
+                message: 'Student not found!',
+              });
+            }
+            return res.status(200).json({
+              message: 'Student returned',
+              ride: student.rows[0],
+            });
+          })
+          .catch((err) => {
+            client.release();
+            if (err) {
+              res.status(500).json({
+                message: 'Something went wrong',
+                err
+              });
+            }
+          });
+      });
   }
+
+  static updateStudent(req, res) {
+    const studentId = req.params.studentId;
+    const updateStudentQuery = `UPDATE students
+                                  SET firstname = $1, lastname = $2
+                                  WHERE student_id::text = $3`;
+
+    pool.connect()
+      .then((client) => {
+        client.query({
+          text: updateStudentQuery,
+          values: [
+            req.body.firstname,
+            req.body.lastname,
+            studentId
+          ]
+        })
+          .then((updatedStudent) => {
+            client.release();
+            return res.status(200).json({
+              message: 'Student name updated',
+              ride: updatedStudent.rows[0],
+            });
+          })
+          .catch((err) => {
+            client.release();
+            if (err) {
+              res.status(500).json({
+                message: 'Something went wrong',
+                err
+              });
+            }
+          });
+      });
+  }
+
+  
 }
