@@ -1,0 +1,37 @@
+import { Pool } from 'pg';
+import { connectionString } from '../db/dbConfig';
+
+const pool = new Pool(connectionString);
+
+const ifStudentExists = (req, res, next) => {
+  const email: String = req.body.course_name.trim().toLowerCase();
+  const checkStudent = `SELECT * FROM students
+                      WHERE email = $1`;
+  pool.connect()
+    .then((client) => {
+      client.query({
+        text: checkStudent,
+        values: [email]
+      })
+        .then((foundMatch) => {
+          client.release();
+          if (!foundMatch.rows[0]) {
+            return next();
+          }
+          return res.status(409).json({
+            message: 'Student with same email exists',
+            success: false
+          });
+        })
+        .catch((err) => {
+          if (err) {
+            res.status(500).send({
+              message: 'An error occured',
+              success: false
+            });
+          }
+        });
+    });
+};
+
+export default ifStudentExists;

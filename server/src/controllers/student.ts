@@ -6,6 +6,9 @@ const pool = new Pool(connectionString);
 class StudentController {
 
   static createStudent(req, res) {
+    const firstname: String = req.body.firstname.trim();
+    const lastname: String = req.body.lastname.trim();
+    const email: String = req.body.email.trim().toLowerCase();
     const studentQuery = `INSERT INTO students (firstname, lastname, email)
                           VALUES ($1, $2, $3)
                           RETURNING *`;
@@ -15,10 +18,9 @@ class StudentController {
         client.query({
           text: studentQuery,
           values: [
-            req.userData,
-            req.body.firstname,
-            req.body.lastname,
-            req.body.email
+            firstname,
+            lastname,
+            email
           ]
         })
           .then((newStudent) => {
@@ -53,7 +55,7 @@ class StudentController {
           client.release();
           return res.status(200).send({
             message: 'All students',
-            students: allStudents.row
+            students: allStudents.rows
           });
         })
         .catch((err) => {
@@ -106,6 +108,8 @@ class StudentController {
 
   static updateStudent(req, res) {
     const studentId = req.params.studentId;
+    const firstname: String = req.body.firstname.trim();
+    const lastname: String = req.body.lastname.trim();
     const updateStudentQuery = `UPDATE students
                                   SET firstname = $1, lastname = $2
                                   WHERE student_id::text = $3`;
@@ -115,8 +119,8 @@ class StudentController {
         client.query({
           text: updateStudentQuery,
           values: [
-            req.body.firstname,
-            req.body.lastname,
+            firstname,
+            lastname,
             studentId
           ]
         })
@@ -202,7 +206,7 @@ class StudentController {
             client.release();
             return res.status(200).send({
               message: 'Student unenrolled for course successfully',
-              unenrolled: unenrolled.rows[0],
+              unenrolled,
             });
           })
           .catch((err) => {
@@ -217,3 +221,5 @@ class StudentController {
       });
   }
 }
+
+export default StudentController;
