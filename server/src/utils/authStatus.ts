@@ -4,7 +4,7 @@ const secretKey = process.env.JWT_SECRET;
 
 
 // checks if a token was passed into the request header
-const checkToken = (req, res) => {
+export const loginStatus = (req, res, next) => {
   if (req.headers.authorization) {
     try {
       const token = req.headers.authorization.split(' ')[1];
@@ -17,7 +17,7 @@ const checkToken = (req, res) => {
       return res.status(401)
         .json({ message: 'Token is invalid, Please login', success: false });
     }
-  }
+  } else {
+    next();
+  };
 }
-
-export default checkToken;

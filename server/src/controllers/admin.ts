@@ -1,16 +1,15 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { Pool } from 'pg';
 import createToken from '../utils/tokenize';
-import validateToken from '../utils/loginUtil';
 import { connectionString } from './../db/dbConfig';
 
 const pool = new Pool(connectionString);
 
 const secretKey = process.env.JWT_SECRET;
 
-class adminController {
+class AdminController {
 
+  // create an Admin
   static createAdmin(req, res) {
     // checks the length of the password and its validity
     const pswd: String = req.body.password;
@@ -35,14 +34,15 @@ class adminController {
           values: [username, hashedPassword]
         })
           .then((createdAdmin) => {
-            const newAdmin = createdAdmin.rows[0];
-            const { username } = newAdmin;
-            // create the token after all the inputs are certified ok
-            const authToken = createToken(username, secretKey);
             client.release();
+            const newAdmin = createdAdmin.rows[0];
+            // create the token after all the inputs are certified ok
+            const { username } = newAdmin;
+            const authToken = createToken({ username }, secretKey);
+            const { password, ...rest } = newAdmin;
             res.status(201).json({
               message: 'Admin created successfully',
-              user: newAdmin,
+              user: rest,
               token: authToken,
               success: true
             });
@@ -66,12 +66,11 @@ class adminController {
       });
   }
 
+  // Admin login to the app
   static adminLogin(req, res) {
     const username = req.body.username.trim().toLowerCase();
     const findAnAdmin = `SELECT * FROM admin
                           WHERE username = $1`;
-
-    validateToken(req, res);
 
     pool.connect()
       .then((client) => {
@@ -86,37 +85,39 @@ class adminController {
               const authAdmin = admin.rows[0];
               bcrypt.compare(req.body.password, authAdmin.password).then((check) => {
                 if (!check) { // If the password does not match
-                  res.status(401).send({ message: 'wrong password!', success: false });
+                  res.status(401).send({ message: 'Wrong username or password!', success: false });
                 } else {
                   // creates a token
-                  const authToken = createToken(username, secretKey);
+                  const { username } = authAdmin;
+                  const authToken = createToken({ username }, secretKey);
+                  const { password, ...rest } = authAdmin;
                   res.status(200).send({
                     message: 'You are logged in!',
                     authToken,
-                    authAdmin,
+                    rest,
                     success: true
                   });
                 }
               })
                 .catch((err) => {
                   if (err) {
-                    res.status(400).send({ message: 'An error occured', success: false });
+                    res.status(400).send({ message: 'An error occurred', success: false });
                   }
                 });
             } else {
               res.status(404).json({
-                message: 'User not registered or wrong email',
+                message: 'Wrong username or password!',
                 success: false,
               });
             }
           })
           .catch((err) => {
             if (err) {
-              res.status(400).send({ message: 'An error occured', success: false });
+              res.status(400).send({ message: 'An error occurred', success: false });
             }
           });
       });
   }
 }
 
-export default adminController;
+export default AdminController;
