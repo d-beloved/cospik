@@ -79,8 +79,11 @@ class StudentController {
                                 FROM student_courses stu_cos
                                 JOIN courses cos ON (stu_cos.course_id = cos.course_id)
                                 WHERE stu_cos.student_id = $1`;
-    const setStudentStatus = `UPDATE students
+    const enrollQuery = `UPDATE students
                                 SET status = 'enrolled'
+                                WHERE student_id::text = $1`;
+    const unenrollQuery = `UPDATE students
+                                SET status = 'not enrolled'
                                 WHERE student_id::text = $1`;
 
     pool.connect()
@@ -104,11 +107,11 @@ class StudentController {
                   })
                     .then((courses) => {
                       client.release();
-                      if (courses.rows[length] > 0) {
+                      if (courses.rows.length > 0 && student.rows[0].status === 'not enrolled') {
                         pool.connect()
                           .then((client) => {
                             client.query({
-                              text: setStudentStatus,
+                              text: enrollQuery,
                               values: [studentId]
                             })
                               .then((status) => {
@@ -116,7 +119,23 @@ class StudentController {
                                 return res.status(200).send({
                                   message: 'Student returned',
                                   student: student.rows[0],
-                                  courses: courses.rows
+                                  enrolled_courses: courses.rows
+                                });
+                              })
+                          })
+                      } else if (courses.rows.length === 0 && student.rows[0].status === 'enrolled') {
+                        pool.connect()
+                          .then((client) => {
+                            client.query({
+                              text: unenrollQuery,
+                              values: [studentId]
+                            })
+                              .then((status) => {
+                                client.release();
+                                return res.status(200).send({
+                                  message: 'Student returned',
+                                  student: student.rows[0],
+                                  enrolled_courses: courses.rows
                                 });
                               })
                           })
@@ -124,7 +143,7 @@ class StudentController {
                         return res.status(200).send({
                           message: 'Student returned',
                           student: student.rows[0],
-                          courses: courses.rows
+                          enrolled_courses: courses.rows
                         });
                       }
                     })
@@ -151,7 +170,8 @@ class StudentController {
                             WHERE student_id::text = $1`
     const updateStudentQuery = `UPDATE students
                                   SET firstname = $1, lastname = $2
-                                  WHERE student_id::text = $3`;
+                                  WHERE student_id::text = $3
+                                  RETURNING *`;
 
     pool.connect()
       .then((client) => {
@@ -200,7 +220,8 @@ class StudentController {
                                   WHERE student_id = $1 AND course_id = $2`;
 
     const enrollQuery = `INSERT INTO student_courses (student_id, course_id)
-                            VALUES ($1, $2)`;
+                            VALUES ($1, $2)
+                            RETURNING *`;
 
     pool.connect()
       .then((client) => {
@@ -245,7 +266,8 @@ class StudentController {
 
   static removeCourseForStudent(req, res) {
     const unenrollQuery = `DELETE FROM student_courses
-                            WHERE student_id = $1 AND course_id = $2`;
+                            WHERE student_id = $1 AND course_id = $2
+                            RETURNING *`;
 
     pool.connect()
       .then((client)=> {
@@ -257,7 +279,7 @@ class StudentController {
             client.release();
             return res.status(200).send({
               message: 'Student unenrolled for course successfully',
-              unenrolled,
+              unenrolled: unenrolled.rows[0],
             });
           })
           .catch((err) => {

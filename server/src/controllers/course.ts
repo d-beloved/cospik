@@ -49,7 +49,7 @@ class CourseController {
           client.release();
           return res.status(200).send({
             message: 'All Courses',
-            students: allCourses.row
+            students: allCourses.rows
           });
         })
         .catch((err) => {
@@ -72,7 +72,8 @@ class CourseController {
                           WHERE course_id::text = $1`
     const updateCourseQuery = `UPDATE courses
                                   SET course_name = $1
-                                  WHERE course_id::text = $2`;
+                                  WHERE course_id::text = $2
+                                  RETURNING *`;
 
     pool.connect()
     .then((client) => {
@@ -116,19 +117,20 @@ class CourseController {
 
   static deleteCourse(req, res) {
     const deleteCourseQuery = `DELETE FROM courses
-                            WHERE course_id = $1`;
+                            WHERE course_id = $1
+                            RETURNING *`;
 
     pool.connect()
       .then((client)=> {
         client.query({
           text: deleteCourseQuery,
-          values: [req.body.course_id]
+          values: [req.params.courseId]
         })
           .then((deleted) => {
             client.release();
             return res.status(200).send({
               message: 'Course deleted successfully',
-              deleted,
+              deleted: deleted.rows[0]
             });
           })
           .catch((err) => {

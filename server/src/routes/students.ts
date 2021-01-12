@@ -27,7 +27,7 @@ routes.get('/:studentId',
 routes.put('/:studentId',
   authenticate,
   Validation.trimsRequestBody,
-  StudentController.getStudent
+  StudentController.updateStudent
 );
 
 routes.post('/enroll',
@@ -36,7 +36,7 @@ routes.post('/enroll',
   StudentController.enrollStudentForCourse
 )
 
-routes.post('/unenroll',
+routes.delete('/unenroll',
   authenticate,
   Validation.trimsRequestBody,
   StudentController.removeCourseForStudent

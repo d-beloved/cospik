@@ -4,7 +4,7 @@ import { connectionString } from '../db/dbConfig';
 const pool = new Pool(connectionString);
 
 const ifStudentExists = (req, res, next) => {
-  const email: String = req.body.course_name.trim().toLowerCase();
+  const email: String = req.body.email.trim().toLowerCase();
   const checkStudent = `SELECT * FROM students
                       WHERE email = $1`;
   pool.connect()
