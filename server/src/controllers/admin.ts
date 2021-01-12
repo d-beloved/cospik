@@ -22,7 +22,7 @@ class AdminController {
 
     // Hash the password before saving it in the db
     const hashedPassword: String = bcrypt.hashSync(pswd, 10);
-    const username: String = req.body.username.trim().toLowerCase();
+    const username: String = req.body.username.toLowerCase();
     const adminQuery = `INSERT INTO admin (username, password)
                           VALUES ($1, $2)
                           RETURNING *`;
@@ -71,7 +71,7 @@ class AdminController {
 
   // Admin login to the app
   static adminLogin(req, res) {
-    const username = req.body.username.trim().toLowerCase();
+    const username = req.body.username.toLowerCase();
     const findAnAdmin = `SELECT * FROM admin
                           WHERE username = $1`;
 

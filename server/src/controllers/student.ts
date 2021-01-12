@@ -6,9 +6,9 @@ const pool = new Pool(connectionString);
 class StudentController {
 
   static createStudent(req, res) {
-    const firstname: String = req.body.firstname.trim();
-    const lastname: String = req.body.lastname.trim();
-    const email: String = req.body.email.trim().toLowerCase();
+    const firstname: String = req.body.firstname;
+    const lastname: String = req.body.lastname;
+    const email: String = req.body.email.toLowerCase();
     const studentQuery = `INSERT INTO students (firstname, lastname, email)
                           VALUES ($1, $2, $3)
                           RETURNING *`;
@@ -145,8 +145,10 @@ class StudentController {
 
   static updateStudent(req, res) {
     const studentId = req.params.studentId;
-    const firstname: String = req.body.firstname.trim();
-    const lastname: String = req.body.lastname.trim();
+    const firstname: String = req.body.firstname;
+    const lastname: String = req.body.lastname;
+    const checkStudent = `SELECT * FROM students
+                            WHERE student_id::text = $1`
     const updateStudentQuery = `UPDATE students
                                   SET firstname = $1, lastname = $2
                                   WHERE student_id::text = $3`;
@@ -154,30 +156,42 @@ class StudentController {
     pool.connect()
       .then((client) => {
         client.query({
-          text: updateStudentQuery,
-          values: [
-            firstname,
-            lastname,
-            studentId
-          ]
+          text: checkStudent,
+          values: [studentId]
         })
-          .then((updatedStudent) => {
+          .then((foundStudent) => {
             client.release();
-            return res.status(200).send({
-              message: 'Student name updated',
-              student: updatedStudent.rows[0],
-            });
-          })
-          .catch((err) => {
-            client.release();
-            if (err) {
-              res.status(500).send({
-                message: 'Something went wrong',
-                err
-              });
+            if (foundStudent) {
+              pool.connect()
+                .then((client) => {
+                  client.query({
+                    text: updateStudentQuery,
+                    values: [
+                      firstname || foundStudent.rows[0].firstname,
+                      lastname || foundStudent.rows[0].lastname,
+                      studentId
+                    ]
+                  })
+                    .then((updatedStudent) => {
+                      client.release();
+                      return res.status(200).send({
+                        message: 'Student name updated',
+                        student: updatedStudent.rows[0],
+                      });
+                    })
+                    .catch((err) => {
+                      client.release();
+                      if (err) {
+                        res.status(500).send({
+                          message: 'Something went wrong',
+                          err
+                        });
+                      }
+                    });
+                });
             }
-          });
-      });
+          })
+      })
   }
 
   static enrollStudentForCourse(req, res) {
