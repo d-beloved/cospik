@@ -75,6 +75,13 @@ class StudentController {
     const studentId = req.params.studentId;
     const getStudentQuery = `SELECT * from students
                               WHERE student_id::text = $1`;
+    const getStudentCourse = `SELECT cos.course_id AS cos_id, cos.course_name AS cos_name
+                                FROM student_courses stu_cos
+                                JOIN courses cos ON (stu_cos.course_id = cos.course_id)
+                                WHERE stu_cos.student_id = $1`;
+    const setStudentStatus = `UPDATE students
+                                SET status = 'enrolled'
+                                WHERE student_id::text = $1`;
 
     pool.connect()
       .then((client) => {
@@ -88,11 +95,41 @@ class StudentController {
               return res.status(404).send({
                 message: 'Student not found!',
               });
+            } else {
+              pool.connect()
+                .then((client) => {
+                  client.query({
+                    text: getStudentCourse,
+                    values: [studentId]
+                  })
+                    .then((courses) => {
+                      client.release();
+                      if (courses.rows[length] > 0) {
+                        pool.connect()
+                          .then((client) => {
+                            client.query({
+                              text: setStudentStatus,
+                              values: [studentId]
+                            })
+                              .then((status) => {
+                                client.release();
+                                return res.status(200).send({
+                                  message: 'Student returned',
+                                  student: student.rows[0],
+                                  courses: courses.rows
+                                });
+                              })
+                          })
+                      } else {
+                        return res.status(200).send({
+                          message: 'Student returned',
+                          student: student.rows[0],
+                          courses: courses.rows
+                        });
+                      }
+                    })
+                })
             }
-            return res.status(200).send({
-              message: 'Student returned',
-              student: student.rows[0],
-            });
           })
           .catch((err) => {
             client.release();
