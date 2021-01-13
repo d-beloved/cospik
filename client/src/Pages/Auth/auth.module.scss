@@ -1,3 +1,5 @@
+@import './../../Assets/styles/breakpoint';
+
 .auth {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,16 @@
   max-width: 40vw;
   padding: 15px;
   border-radius: 10px;
+  box-shadow: 10px 10px 10px #e5e6e7;
   background: #edeffc;
+
+  @include tablet {
+    max-width: 55vw;
+  }
+
+  @include mobile {
+    max-width: 85vw;
+  }
 
   .welcome {
     font-size: 25px;
