@@ -1,0 +1,33 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  margin: 10em auto;
+  max-width: 40vw;
+  padding: 15px;
+  border-radius: 10px;
+  background: #edeffc;
+
+  .welcome {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 0 auto 15px;
+
+    .logo {
+      height: 40px;
+      img {
+        height: 45px;
+      }
+    }
+  }
+
+  .form {
+    padding: 25px;
+    background: #d9defc;
+
+    .textShow {
+      margin-bottom: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
