@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import styles from "./style.module.scss";
 
@@ -17,7 +18,7 @@ export default function InfoTable() {
         </thead>
         <tbody>
           <tr>
-            <td>Mark</td>
+            <Link to="/student/1"><td>Mark</td></Link>
             <td>Otto</td>
             <td>mark.otto@gmail.com</td>
             <td>Not Enrolled</td>

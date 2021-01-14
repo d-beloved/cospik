@@ -8,14 +8,16 @@ import styles from "./style.module.scss";
 export default function AllStudents() {
   return (
     <>
-      <Header action="Add Student" goTo="Courses" goToLink="/courses" />
       <div className={styles.students}>
-        <p>
-          <h1 className={styles.heading}>All Students</h1>
-          <hr />
-        </p>
-        <InfoTable />
-        <Paginate />
+        <Header action="Add Student" goTo="Courses" goToLink="/courses" />
+        <div className={styles.content}>
+          <p>
+            <h1 className={styles.heading}>All Students</h1>
+            <hr />
+          </p>
+          <InfoTable />
+          <Paginate />
+        </div>
         <Footer />
       </div>
     </>

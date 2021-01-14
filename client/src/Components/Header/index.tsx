@@ -22,13 +22,15 @@ export default function Header({ action, goTo, goToLink }: Props) {
       />
       <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
         <Nav>
-          <Nav.Link href="#home" id={styles.action}>
-            {action}
-          </Nav.Link>
+          {action ? (
+            <Nav.Link href="#home" id={styles.action}>
+              {action}
+            </Nav.Link>
+          ) : null}
           <Nav.Link href={goToLink} id={styles.action}>
             {goTo}
           </Nav.Link>
-        <Navbar.Text id={styles.user}>Admin</Navbar.Text>
+          <Navbar.Text id={styles.user}>Admin</Navbar.Text>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

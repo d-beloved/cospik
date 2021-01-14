@@ -1,0 +1,14 @@
+@import '../../../Assets/styles/breakpoint';
+
+.detail {
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    min-height: calc(100vh - 80px);
+    /* 60px header + 20px footer = 80px  */
+    background: #ebebf7;
+
+    
+  }
+}
