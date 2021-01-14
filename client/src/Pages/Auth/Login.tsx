@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import styles from './auth.module.scss';
 import logo from 'Assets/images/COSPIK.png'
 
-export default function Signup() {
+export default function Login() {
   return (
     <div className={styles.auth}>
       <p className={styles.welcome}>Welcome to <span className={styles.logo}><img src={logo} alt="logo"/></span></p>
