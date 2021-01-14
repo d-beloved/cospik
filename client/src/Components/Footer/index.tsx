@@ -1,8 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import styles from "./style.module.scss";
 
 export default function Footer() {
   return (
-    <p>Copyright &copy; <Link to="https://github.com/d-beloved">Ayodeji</Link> {new Date().getFullYear()}</p>
+    <div className={styles.foot}>
+      &copy;{" "}
+      <a href="https://github.com/d-beloved" target="_blank" rel="noreferrer">
+        Ayodeji
+      </a>{" "}
+      {new Date().getFullYear()}
+    </div>
   );
 }

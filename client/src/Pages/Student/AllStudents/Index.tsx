@@ -10,7 +10,10 @@ export default function AllStudents() {
     <>
       <Header action="Add Student" />
       <div className={styles.students}>
-        <h1>All Students</h1>
+        <p>
+          <h1 className={styles.heading}>All Students</h1>
+          <hr/>
+        </p>
         <InfoTable />
         <Paginate />
         <Footer />
