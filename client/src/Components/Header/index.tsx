@@ -1,19 +1,29 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-// import Button from "react-bootstrap/Button";
-// import styles from "./style.module.scss";
+import styles from "./style.module.scss";
 import logo from "Assets/images/COSPIK.png";
 
-export default function Header() {
+interface Props {
+  action?: string;
+}
+
+export default function Header({ action }: Props) {
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/students"><img src={logo} alt="logo"/></Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#link">Link</Nav.Link>
+    <Navbar expand="lg" className={styles.head} collapseOnSelect>
+      <Navbar.Brand href="/students" className={styles.logo}>
+        <img src={logo} alt="logo" />
+      </Navbar.Brand>
+      <Navbar.Toggle
+        aria-controls="basic-navbar-nav"
+        className={styles.burger}
+      />
+      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+        <Nav>
+          <Nav.Link href="#home" id={styles.action}>
+            {action}
+          </Nav.Link>
+        <Navbar.Text id={styles.user}>Admin</Navbar.Text>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
