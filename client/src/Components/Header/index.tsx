@@ -6,9 +6,11 @@ import logo from "Assets/images/COSPIK.png";
 
 interface Props {
   action?: string;
+  goTo: string;
+  goToLink: string;
 }
 
-export default function Header({ action }: Props) {
+export default function Header({ action, goTo, goToLink }: Props) {
   return (
     <Navbar expand="lg" className={styles.head} collapseOnSelect>
       <Navbar.Brand href="/students" className={styles.logo}>
@@ -22,6 +24,9 @@ export default function Header({ action }: Props) {
         <Nav>
           <Nav.Link href="#home" id={styles.action}>
             {action}
+          </Nav.Link>
+          <Nav.Link href={goToLink} id={styles.action}>
+            {goTo}
           </Nav.Link>
         <Navbar.Text id={styles.user}>Admin</Navbar.Text>
         </Nav>

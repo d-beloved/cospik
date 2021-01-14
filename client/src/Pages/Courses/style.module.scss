@@ -1,0 +1,42 @@
+@import './../../Assets/styles/breakpoint';
+
+.students {
+  display: flex;
+  flex-direction: column;
+
+  p {
+    display: flex;
+    flex-direction: column;
+
+    .heading {
+      padding: 2rem 20px 0;
+      font-size: 30px;
+      font-weight: bolder;
+      margin: 0 auto;
+
+      @include tablet {
+        font-size: 25px;
+      }
+
+      @include mobile {
+        font-size: 23px;
+      }
+    }
+
+    hr {
+      width: 10rem;
+      border-width: 0.2rem;
+      border-color: #cdd3f7;
+
+      @include tablet {
+        width: 7rem;
+        border-width: 0.2rem;
+      }
+
+      @include mobile {
+        width: 6rem;
+        border-width: 0.2rem;
+      }
+    }
+  }
+}
