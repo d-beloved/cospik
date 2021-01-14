@@ -5,10 +5,87 @@
   flex-direction: column;
 
   .content {
+    display: flex;
+    flex-direction: column;
     min-height: calc(100vh - 80px);
-    /* 60px header + 20px footer = 80px  */
     background: #ebebf7;
+    padding: 3rem;
 
-    
+    .top {
+      display: flex;
+      justify-content: space-evenly;
+
+      .student {
+        padding-left: 4rem;
+
+        h1 {
+          font-size: 35px;
+          color: #939394;
+        }
+
+        p {
+          color: #5b73ff;
+          font-weight: bold;
+        }
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        background: white;
+        padding: 5px;
+        margin-right: 4rem;
+        border-radius: 8px;
+        box-shadow: 8px 10px 5px #cdd3f7;
+
+        .numb {
+          font-weight: bolder;
+          font-size: 30px;
+          margin: 0 auto;
+          color: #5b73ff;
+        }
+
+        .text {
+          font-size: 12px;
+          font-weight: bold;
+          color: #939394;
+        }
+      }
+    }
+
+    .course {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      margin: 2rem 12rem;
+      border-radius: 20px;
+      padding: 20px;
+
+      .head {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 2rem;
+
+        .act {
+          font-weight: bolder;
+          color: #7f92fa;
+          margin-top: 4px;
+        }
+
+        .buton {
+          border: 2px solid #7f92fa;
+          background: transparent;
+          padding: 6px 15px;
+          border-radius: 20px;
+          color: #7f92fa;
+
+          &:hover {
+            font-weight: bolder;
+          }
+        }
+
+
+      }
+    }
   }
 }
