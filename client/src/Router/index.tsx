@@ -4,7 +4,8 @@ import Signup from 'Pages/Auth/Signup';
 import Login from 'Pages/Auth/Login';
 import Students from 'Pages/Student/AllStudents';
 import Courses from 'Pages/Courses';
-import oneStudent from 'Pages/Student/StudentDetails';
+import OneStudent from 'Pages/Student/StudentDetails';
+import NotFound from 'Pages/NotFound'
 
 export default function Routes() {
   return (
@@ -14,7 +15,8 @@ export default function Routes() {
         <Route exact path= '/login' component={Login} />
         <Route exact path= '/students' component={Students} />
         <Route exact path= '/courses' component={Courses} />
-        <Route path= '/student/:id' component={oneStudent} />
+        <Route path= '/student/:id' component={OneStudent} />
+        <Route path= '*' component={NotFound} />
       </Switch>
     </Router>
   );
