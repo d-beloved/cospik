@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useMappedState } from "redux-react-hook";
 import { registerAdmin } from "Store/actions/auth.action";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -19,7 +19,7 @@ export default function Signup() {
     username: "",
     password: "",
   });
-  const { loading } = useSelector(({ adminReducer }: any) => ({
+  const { loading } = useMappedState(({ adminReducer }: any) => ({
     loading: adminReducer.loading,
   }));
 

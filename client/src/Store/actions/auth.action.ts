@@ -20,34 +20,38 @@ export const registerAdmin = (
       username,
       password
     });
-    if (response.success) {
-      Axios.defaults.headers.common['Authorization'] = response.token;
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.token);
-      dispatch(
-        actionCreator(ADMIN_REGISTER_SUCCESS, {
-          ...response,
-        })
-      );
-      dispatch(
-        setNotify({
-          title: 'Signup',
-          body: response.message,
-          type: 'success'
-        })
-      );
-
-      action && action();
-    }
-  } catch (error) {
-    errorAction && errorAction();
-    dispatch(actionCreator(ADMIN_REGISTER_FAILURE));
+    dispatch(actionCreator(ADMIN_REGISTER_REQUEST, false));
+    Axios.defaults.headers.common['Authorization'] = response.token;
+    localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem('token', response.token);
+    dispatch(
+      actionCreator(ADMIN_REGISTER_SUCCESS, {
+        ...response,
+      })
+    );
     dispatch(
       setNotify({
-        title: 'Error',
-        body: error.response.message,
-        type: 'error'
-      }));
+        title: 'Signup',
+        body: response.message,
+        type: 'success'
+      })
+    );
+
+    return action && action();
+
+  } catch (error) {
+    errorAction && errorAction();
+    dispatch(actionCreator(ADMIN_REGISTER_REQUEST, false));
+    if (error.response) {
+      dispatch(actionCreator(ADMIN_REGISTER_FAILURE, error.response.data));
+      return dispatch(
+        setNotify({
+          title: 'Error',
+          body: error.response.data.message,
+          type: 'error'
+        }));
+    }
+    return dispatch(actionCreator(ADMIN_REGISTER_FAILURE, "Unable to sign up at the momeent"));
   }
 };
 
@@ -103,7 +107,7 @@ export const logoutAdmin = (history: any) => async (dispatch: any) => {
         type: 'error'
       })
     );
-  } catch (error) {}
+  } catch (error) { }
 
   return history && history.push('/login');
 };

@@ -50,11 +50,11 @@ const DropItem = ({ title, body, type, index }: dropItemProps) => {
   );
 };
 
-const DropDown = () => {
+const Notify = () => {
   const messages = useMappedState(state => state.notify.messages);
   return (
     <div className={styles.notify}>
-      {messages.map((message, i) => (
+      {messages.map((message: any, i: any) => (
         <DropItem
           key={i}
           index={i}
@@ -67,4 +67,4 @@ const DropDown = () => {
   );
 };
 
-export default DropDown;
+export default Notify;
