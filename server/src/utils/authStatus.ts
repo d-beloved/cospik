@@ -9,7 +9,7 @@ export const loginStatus = (req, res, next) => {
     try {
       const token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, secretKey);
-      req.userData = decoded.id;
+      req.userData = decoded;
       if (req.userData !== null) {
         return res.status(200).json({ message: 'You are already logged in', success: true });
       }
@@ -35,7 +35,7 @@ export const authenticate = (req, res, next) => {
       if (err) {
         res.status(401).send({ message: 'Authentication failed! Token is Invalid or expired. Please Login again', success: false });
       } else {
-        req.userData = decoded.username;
+        req.userData = decoded;
         next();
       }
     });

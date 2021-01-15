@@ -12,7 +12,7 @@ class AdminController {
   // create an Admin
   static createAdmin(req, res) {
     // checks the length of the password and its validity
-    const pswd: String = req.body.password;
+    const pswd: string = req.body.password;
     if (pswd.length < 6) {
       return res.status(406).send({
         message: 'passwords cannot be less than 6 characters',
@@ -21,8 +21,8 @@ class AdminController {
     };
 
     // Hash the password before saving it in the db
-    const hashedPassword: String = bcrypt.hashSync(pswd, 10);
-    const username: String = req.body.username.toLowerCase();
+    const hashedPassword: string = bcrypt.hashSync(pswd, 10);
+    const username: string = req.body.username.toLowerCase();
     const adminQuery = `INSERT INTO admin (username, password)
                           VALUES ($1, $2)
                           RETURNING *`;
@@ -97,7 +97,7 @@ class AdminController {
                   res.status(200).send({
                     message: 'You are logged in!',
                     authToken,
-                    rest,
+                    user: rest,
                     success: true
                   });
                 }
