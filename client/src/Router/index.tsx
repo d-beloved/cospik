@@ -5,11 +5,13 @@ import Login from 'Pages/Auth/Login';
 import Students from 'Pages/Student/AllStudents';
 import Courses from 'Pages/Courses';
 import OneStudent from 'Pages/Student/StudentDetails';
-import NotFound from 'Pages/NotFound'
+import NotFound from 'Pages/NotFound';
+import Notify from 'Components/Notify';
 
 export default function Routes() {
   return (
     <Router>
+      <Notify />
       <Switch>
         <Route exact path= '/' component={Signup} />
         <Route exact path= '/login' component={Login} />

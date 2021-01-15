@@ -1,17 +1,18 @@
 import React from"react";
-import { Provider } from "react-redux";
-import configureStore from 'Store';
+// import { Provider } from "react-redux";
+import { StoreContext } from "redux-react-hook";
+import store from 'Store';
 import Routes from "Router";
 import setUser from 'Utils/setUser';
 import './App.scss';
 
-const store = configureStore();
+// const store = configureStore();
 setUser(store);
 function App() {
   return (
-    <Provider store={store}>
+    <StoreContext.Provider value={store}>
       <Routes />
-    </Provider>
+    </StoreContext.Provider>
   );
 }
 

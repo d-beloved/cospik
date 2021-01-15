@@ -23,11 +23,11 @@ export default function Signup() {
     loading: adminReducer.loading,
   }));
 
-  const signUpAction = (e?: Event) => {
+  const signUpAction = (e: any) => {
     e && e.preventDefault();
     dispatch(
       registerAdmin({ ...state }, () =>
-        history.push("/auth/activation")
+        history.push("/students")
       )
     );
   };
@@ -40,24 +40,49 @@ export default function Signup() {
 
   return (
     <div className={styles.auth}>
-      <p className={styles.welcome}>Welcome to <span className={styles.logo}><img src={logo} alt="logo"/></span></p>
+      <p className={styles.welcome}>
+        Welcome to{" "}
+        <span className={styles.logo}>
+          <img src={logo} alt="logo" />
+        </span>
+      </p>
       <Form className={styles.form}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter username" />
+          <Form.Control
+            type="text"
+            name="username"
+            value={state.username}
+            placeholder="Enter username"
+            onChange={setValue}
+          />
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control
+            type="password"
+            name="password"
+            value={state.password}
+            placeholder="Password"
+            onChange={setValue}
+          />
         </Form.Group>
 
         <Form.Text className={styles.textShow}>
-          Have an account? <Link to='/login'>Login here</Link>
+          Have an account? <Link to="/login">Login here</Link>
         </Form.Text>
 
-        <Button variant="primary" type="submit" block>
-          Signup
+        <Button
+          variant="primary"
+          type="submit"
+          block
+          onClick={signUpAction}
+          disabled={
+            (state.username === "" || state.password === "" || loading) && true
+          }
+        >
+          {loading ? "Loading..." : "Signup"}
         </Button>
       </Form>
     </div>

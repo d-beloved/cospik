@@ -25,7 +25,7 @@ const isLoggedIn = () => {
 };
 
 const setUser = async (store: any) => {
-  Axios.defaults.baseURL = 'http://localhost:3000/api';
+  Axios.defaults.baseURL = 'http://localhost:3110/api';
   let user = null;
   const rawUser = localStorage.getItem('user');
   if (rawUser) {
