@@ -64,34 +64,37 @@ export const adminLogin = (
       username,
       password
     });
-    if (response.success) {
-      Axios.defaults.headers.common['Authorization'] = response.authToken;
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.authToken);
-      dispatch(
-        actionCreator(ADMIN_SIGN_IN_SUCCESS, {
-          ...response,
-        })
-      );
-      dispatch(
-        setNotify({
-          title: 'Login',
-          body: response.message,
-          type: 'success'
-        })
-      );
-
-      action && action();
-    }
-  } catch (error) {
-    errorAction && errorAction();
-    dispatch(actionCreator(ADMIN_SIGN_IN_FAILURE));
+    dispatch(actionCreator(ADMIN_SIGN_IN_REQUEST, false));
+    Axios.defaults.headers.common['Authorization'] = response.authToken;
+    localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem('token', response.authToken);
+    dispatch(
+      actionCreator(ADMIN_SIGN_IN_SUCCESS, {
+        ...response,
+      })
+    );
     dispatch(
       setNotify({
-        title: error.response.errors.param,
-        body: error.response.errors.msg,
-        type: 'error'
-      }));
+        title: 'Login',
+        body: response.message,
+        type: 'success'
+      })
+    );
+
+    return action && action();
+  } catch (error) {
+    errorAction && errorAction();
+    dispatch(actionCreator(ADMIN_SIGN_IN_REQUEST, false));
+    if (error.response) {
+      dispatch(actionCreator(ADMIN_SIGN_IN_FAILURE));
+      dispatch(
+        setNotify({
+          title: 'Error',
+          body: error.response.data.message,
+          type: 'error'
+        }));
+    }
+    return dispatch(actionCreator(ADMIN_SIGN_IN_FAILURE, "unable to sigin at the moment"));
   }
 };
 
