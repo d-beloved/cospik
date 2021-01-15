@@ -20,7 +20,7 @@ export default function AllStudents() {
             <h1 className={styles.heading}>All Students</h1>
             <hr />
           </p>
-          <InfoTable />
+          <InfoTable trigger="student" />
           <Paginate />
         </div>
         <Footer />

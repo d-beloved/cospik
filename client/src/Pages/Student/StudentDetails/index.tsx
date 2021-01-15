@@ -25,7 +25,7 @@ export default function OneStudent() {
             <p className={styles.act}>ACTIVE COURSES</p>
             <p className={styles.buton}>Add Course</p>
           </div>
-          <Table />
+          <Table trigger="oneStudent"/>
           <Paginate />
         </div>
       </div>
