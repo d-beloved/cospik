@@ -9,7 +9,12 @@ export default function AllStudents() {
   return (
     <>
       <div className={styles.students}>
-        <Header action="New Course" goTo="Students" goToLink="/students" />
+        <Header
+          action="New Course"
+          goTo="Students"
+          goToLink="/students"
+          trigger="course"
+        />
         <div className={styles.content}>
           <p>
             <h1 className={styles.heading}>All Courses</h1>
