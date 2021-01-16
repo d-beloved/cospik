@@ -14,7 +14,7 @@ import { setNotify } from './notify.action';
 export const registerAdmin = (
   { username, password }: { username: string; password: string; }, action?: () => void, errorAction?: () => void,
 ) => async (dispatch: any) => {
-  dispatch(actionCreator(ADMIN_REGISTER_REQUEST));
+  dispatch(actionCreator(ADMIN_REGISTER_REQUEST, true));
   try {
     const { data: response } = await Axios.post("/auth/signup", {
       username,

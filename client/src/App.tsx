@@ -2,7 +2,7 @@ import React from"react";
 import { StoreContext } from "redux-react-hook";
 import store from 'Store';
 import Routes from "Router";
-import setUser from 'Utils/setUser';
+import { setUser } from 'Utils/setUser';
 import './App.scss';
 
 

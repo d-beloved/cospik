@@ -10,7 +10,7 @@ const ProtectedRoute = ({
   exact?: boolean;
   path: string;
 }) => {
-  const isAuth = useMappedState(({ adminReducer }: any) => adminReducer.isAuthenticated);
+  const isAuth: boolean = useMappedState(({ adminReducer }: any) => adminReducer.isAuthenticated);
   return (
     <Route
       {...configs}

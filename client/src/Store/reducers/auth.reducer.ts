@@ -1,3 +1,4 @@
+import { isLoggedIn } from 'Utils/setUser';
 import isEmpty from 'lodash/isEmpty';
 import {
   ADMIN_SIGN_IN_REQUEST,
@@ -14,20 +15,20 @@ interface AdminProps {
   user: Object;
   loading: boolean;
   error: object | null;
-  isAuthenticated: boolean
+  isAuthenticated: any
 }
 
 const initialState: AdminProps = {
   user: {},
   loading: false,
   error: null,
-  isAuthenticated: false,
+  isAuthenticated: isLoggedIn(),
 };
 
 export default function adminReducer(state = initialState, action: any): any {
   switch (action.type) {
     case SET_ADMIN:
-      return { ...state, isAuthenticated: isEmpty(action.payload), user: action.payload };
+      return { ...state, isAuthenticated: !isEmpty(action.payload), user: action.payload };
     case ADMIN_REGISTER_REQUEST:
       return { ...state, loading: true };
     case ADMIN_REGISTER_FAILURE:

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useMappedState } from 'redux-react-hook';
 import Navbar from "react-bootstrap/Navbar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -17,6 +18,8 @@ interface Props {
 export default function Header({ action, goTo, goToLink, trigger }: Props) {
   const [studentModal, setStudentModal] = useState(false);
   const [courseModal, setCourseModal] = useState(false);
+
+  const user = useMappedState(({ adminReducer }: any) => adminReducer.user.username);
 
   const handleCloseStudent = () => setStudentModal(false);
   const handleStudentModal = () => setStudentModal(true);
@@ -50,7 +53,7 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
             <Nav.Link href={goToLink} id={styles.action}>
               {goTo}
             </Nav.Link>
-            <Navbar.Text id={styles.user}>Admin</Navbar.Text>
+            <Navbar.Text id={styles.user}>{user}</Navbar.Text>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

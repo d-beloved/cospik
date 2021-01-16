@@ -7,9 +7,9 @@ interface jwtSign {
   exp: any
 }
 
-const isLoggedIn = ( token: any ) => {
-  // const token = JSON.parse(localStorage.getItem('token') || '{}');
-  let decoded: jwtSign ;
+export const isLoggedIn = () => {
+  const token = localStorage.getItem('token') || '{}';
+  let decoded: jwtSign;
 
   try {
     decoded = jwt_decode(token);
@@ -23,7 +23,7 @@ const isLoggedIn = ( token: any ) => {
   return exp * 1000 - currentDate.getTime() > 1;
 };
 
-const setUser = async (store: any) => {
+export const setUser = async (store: any) => {
   Axios.defaults.baseURL = 'http://localhost:3110/api';
   let user = null;
   const rawUser = localStorage.getItem('user');
@@ -33,17 +33,12 @@ const setUser = async (store: any) => {
 
   if (user) {
     const token = localStorage.getItem('token');
-    const valid = await isLoggedIn( token );
+    const valid = await isLoggedIn();
     if (valid) {
-      if (localStorage.getItem('user')) {
-        Axios.defaults.headers.common['Authorization'] = token;
-
-        store.dispatch(actionCreator(ADMIN_SIGN_IN_SUCCESS, user));
-      }
+      Axios.defaults.headers.common['Authorization'] = token;
+      store.dispatch(actionCreator(ADMIN_SIGN_IN_SUCCESS, user));
     } else {
       store.dispatch(actionCreator(LOGOUT_ADMIN));
     }
   }
 };
-
-export default setUser;
