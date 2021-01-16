@@ -70,7 +70,7 @@ export const adminLogin = (
     localStorage.setItem('token', response.authToken);
     dispatch(
       actionCreator(ADMIN_SIGN_IN_SUCCESS, {
-        ...response,
+        ...response.user
       })
     );
     dispatch(
@@ -98,19 +98,11 @@ export const adminLogin = (
   }
 };
 
-export const logoutAdmin = (history: any) => async (dispatch: any) => {
+export const logoutAdmin = (history?: any) => async (dispatch: any) => {
   try {
     localStorage.clear();
-
+    Axios.defaults.headers.common['Authorization'] = '';
     dispatch(actionCreator(LOGOUT_ADMIN));
-    dispatch(
-      setNotify({
-        title: 'Session expired',
-        body: 'Please login again',
-        type: 'error'
-      })
-    );
+    return history && history.push('/login');
   } catch (error) { }
-
-  return history && history.push('/login');
 };

@@ -11,7 +11,7 @@ export const loginStatus = (req, res, next) => {
       const decoded = jwt.verify(token, secretKey);
       req.userData = decoded;
       if (req.userData !== null) {
-        return res.status(200).json({ message: 'You are already logged in', success: true });
+        return res.status(200).json({ message: 'You are already logged in', success: true, authToken: token, user: req.userData });
       }
     } catch (error) {
       return res.status(401)

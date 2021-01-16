@@ -91,8 +91,8 @@ class AdminController {
                   res.status(401).send({ message: 'Wrong username or password!', success: false });
                 } else {
                   // creates a token
-                  const { username } = authAdmin;
-                  const authToken = createToken({ username }, secretKey);
+                  const { username, id } = authAdmin;
+                  const authToken = createToken({ username, id }, secretKey);
                   const { password, ...rest } = authAdmin;
                   res.status(200).send({
                     message: 'You are logged in!',

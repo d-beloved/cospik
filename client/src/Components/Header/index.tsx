@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useMappedState } from 'redux-react-hook';
+import { useDispatch, useMappedState } from 'redux-react-hook';
+import { logoutAdmin } from "Store/actions/auth.action";
 import Navbar from "react-bootstrap/Navbar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -18,14 +19,19 @@ interface Props {
 export default function Header({ action, goTo, goToLink, trigger }: Props) {
   const [studentModal, setStudentModal] = useState(false);
   const [courseModal, setCourseModal] = useState(false);
+  const dispatch = useDispatch();
 
-  const user = useMappedState(({ adminReducer }: any) => adminReducer.user.username);
-
+  const user = useMappedState(({ adminReducer }: any) => adminReducer);
+  console.log('I dey', user);
   const handleCloseStudent = () => setStudentModal(false);
   const handleStudentModal = () => setStudentModal(true);
 
   const handleCloseCourse = () => setCourseModal(false);
   const handleCourseModal = () => setCourseModal(true);
+
+  const logout = () => {
+    dispatch(logoutAdmin());
+  };
 
   return (
     <>
@@ -53,7 +59,10 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
             <Nav.Link href={goToLink} id={styles.action}>
               {goTo}
             </Nav.Link>
-            <Navbar.Text id={styles.user}>{user}</Navbar.Text>
+            <Navbar.Text id={styles.user}>{user.user.username}</Navbar.Text>
+            {user.isAuthenticated && (
+              <Navbar.Text onClick={logout} id={styles.logout}>logout</Navbar.Text>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
