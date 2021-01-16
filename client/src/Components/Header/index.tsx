@@ -22,7 +22,6 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
   const dispatch = useDispatch();
 
   const user = useMappedState(({ adminReducer }: any) => adminReducer);
-  console.log('I dey', user);
   const handleCloseStudent = () => setStudentModal(false);
   const handleStudentModal = () => setStudentModal(true);
 

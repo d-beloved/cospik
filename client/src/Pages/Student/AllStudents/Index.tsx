@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+// import { useHistory } from 'react-router-dom';
+import { useDispatch, useMappedState } from "redux-react-hook";
+import { getStudents } from "Store/actions/student.action";
+import Spinner from 'react-bootstrap/Spinner'
 import Header from "Components/Header";
 import InfoTable from "Components/Table";
 import Paginate from "Components/Pagination";
 import Footer from "Components/Footer";
 import styles from "./style.module.scss";
 
+
+const tableHeader: Array<string> = ['First Name', 'Last Name', 'Email', 'Status', ''];
+
 export default function AllStudents() {
+  const dispatch = useDispatch();
+  const students = useMappedState(({ studentReducer }: any) => studentReducer);
+  const loading = students.loading;
+
+  useEffect(() => {
+    dispatch(getStudents());
+  }, [dispatch]);
+
   return (
     <>
       <div className={styles.students}>
@@ -20,8 +35,17 @@ export default function AllStudents() {
             <h1 className={styles.heading}>All Students</h1>
             <hr />
           </p>
-          <InfoTable trigger="student" />
-          <Paginate />
+          {loading ? (
+            <Spinner className={styles.loader} animation="grow" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          ) : (
+            students && students.student &&
+            <div>
+              <InfoTable trigger="student" header={tableHeader} tableData={students.student} redirectTo />
+              <Paginate />
+            </div>
+          )}
         </div>
         <Footer />
       </div>

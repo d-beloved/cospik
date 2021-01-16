@@ -8,9 +8,17 @@ import styles from "./style.module.scss";
 
 interface Props {
   trigger: string;
+  header?: Array<string>;
+  redirectTo?: boolean;
+  tableData?: Object;
 }
 
-export default function InfoTable({ trigger }: Props) {
+export default function InfoTable({
+  trigger,
+  header,
+  redirectTo,
+  tableData,
+}: Props) {
   const [editStudentModal, setStudentModal] = useState(false);
   const [editCourseModal, setCourseModal] = useState(false);
 
@@ -26,15 +34,14 @@ export default function InfoTable({ trigger }: Props) {
         <Table striped hover responsive="lg" borderless>
           <thead>
             <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th></th>
+              {header?.map((title, i) => (
+                <th>{title}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
             <tr>
+              {tableData?}
               <Link to="/student/1">
                 <td>Mark</td>
               </Link>

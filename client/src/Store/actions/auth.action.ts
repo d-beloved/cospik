@@ -14,19 +14,18 @@ import { setNotify } from './notify.action';
 export const registerAdmin = (
   { username, password }: { username: string; password: string; }, action?: () => void, errorAction?: () => void,
 ) => async (dispatch: any) => {
-  dispatch(actionCreator(ADMIN_REGISTER_REQUEST, true));
+  dispatch(actionCreator(ADMIN_REGISTER_REQUEST));
   try {
     const { data: response } = await Axios.post("/auth/signup", {
       username,
       password
     });
-    dispatch(actionCreator(ADMIN_REGISTER_REQUEST, false));
-    Axios.defaults.headers.common['Authorization'] = response.token;
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${response.token}`;
     localStorage.setItem('user', JSON.stringify(response.user));
     localStorage.setItem('token', response.token);
     dispatch(
       actionCreator(ADMIN_REGISTER_SUCCESS, {
-        ...response,
+        ...response.user,
       })
     );
     dispatch(
@@ -41,7 +40,6 @@ export const registerAdmin = (
 
   } catch (error) {
     errorAction && errorAction();
-    dispatch(actionCreator(ADMIN_REGISTER_REQUEST, false));
     if (error.response) {
       dispatch(actionCreator(ADMIN_REGISTER_FAILURE, error.response.data));
       return dispatch(
@@ -64,8 +62,7 @@ export const adminLogin = (
       username,
       password
     });
-    dispatch(actionCreator(ADMIN_SIGN_IN_REQUEST, false));
-    Axios.defaults.headers.common['Authorization'] = response.authToken;
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${response.authToken}`;
     localStorage.setItem('user', JSON.stringify(response.user));
     localStorage.setItem('token', response.authToken);
     dispatch(
@@ -84,9 +81,8 @@ export const adminLogin = (
     return action && action();
   } catch (error) {
     errorAction && errorAction();
-    dispatch(actionCreator(ADMIN_SIGN_IN_REQUEST, false));
     if (error.response) {
-      dispatch(actionCreator(ADMIN_SIGN_IN_FAILURE));
+      dispatch(actionCreator(ADMIN_SIGN_IN_FAILURE, error.response.data));
       dispatch(
         setNotify({
           title: 'Error',
@@ -103,6 +99,13 @@ export const logoutAdmin = (history?: any) => async (dispatch: any) => {
     localStorage.clear();
     Axios.defaults.headers.common['Authorization'] = '';
     dispatch(actionCreator(LOGOUT_ADMIN));
+    dispatch(
+      setNotify({
+        title: 'Logout',
+        body: 'You are logged out!',
+        type: 'success'
+      })
+    );
     return history && history.push('/login');
   } catch (error) { }
 };

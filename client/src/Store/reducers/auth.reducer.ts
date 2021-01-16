@@ -30,16 +30,14 @@ export default function adminReducer(state = initialState, action: any): any {
     case SET_ADMIN:
       return { ...state, isAuthenticated: !isEmpty(action.payload), user: action.payload };
     case ADMIN_REGISTER_REQUEST:
+    case ADMIN_SIGN_IN_REQUEST:
       return { ...state, loading: true };
     case ADMIN_REGISTER_FAILURE:
+    case ADMIN_SIGN_IN_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case ADMIN_REGISTER_SUCCESS:
     case ADMIN_SIGN_IN_SUCCESS:
-      return { ...state, loading: false, isAuthenticated: true, user: action.payload };
-    case ADMIN_SIGN_IN_REQUEST:
-      return { ...state, loading: true };
-    case ADMIN_SIGN_IN_FAILURE:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, isAuthenticated: true, user: action.payload, error: null };
     case LOGOUT_ADMIN:
       return { ...state, loading: false, isAuthenticated: false, user: null, error: null };
 
