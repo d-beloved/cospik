@@ -7,7 +7,7 @@ const secretKey = process.env.JWT_SECRET;
 export const loginStatus = (req, res, next) => {
   if (req.headers.authorization) {
     try {
-      const token = req.headers.authorization.split(' ')[1];
+      const token = req.headers.authorization.split(' ')[0];
       const decoded = jwt.verify(token, secretKey);
       req.userData = decoded;
       if (req.userData !== null) {
@@ -30,7 +30,7 @@ export const authenticate = (req, res, next) => {
     res.status(401).send({ message: 'token is required!', success: false });
   } else {
     // checks if token matches the one provided at login
-    const rightToken = token.split(' ')[1]; // Splits the token to reveal the user
+    const rightToken = token.split(' ')[0]; // Splits the token to reveal the user
     jwt.verify(rightToken, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         res.status(401).send({ message: 'Authentication failed! Token is Invalid or expired. Please Login again', success: false });
