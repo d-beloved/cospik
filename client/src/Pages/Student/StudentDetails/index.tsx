@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import Header from "Components/Header";
-import Paginate from "Components/Pagination";
+import Paginate from "Components/OldPagination";
 import Table from "Components/Table";
 import Footer from "Components/Footer";
 import styles from "./style.module.scss";

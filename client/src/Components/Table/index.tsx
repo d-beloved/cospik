@@ -9,14 +9,12 @@ import styles from "./style.module.scss";
 interface Props {
   trigger: string;
   header?: Array<string>;
-  redirectTo?: boolean;
   tableData?: Object[];
 }
 
 export default function InfoTable({
   trigger,
   header,
-  redirectTo,
   tableData,
 }: Props) {
   const [editStudentModal, setStudentModal] = useState(false);

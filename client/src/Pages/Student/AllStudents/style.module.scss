@@ -47,7 +47,11 @@
 
     div {
       display: flex;
-    flex-direction: column;
+      flex-direction: column;
+
+      .paginate {
+        margin: 0 auto;
+      }
     }
 
     .loader {

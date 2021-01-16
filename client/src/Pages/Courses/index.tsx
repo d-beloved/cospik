@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "Components/Header";
 import InfoTable from "Components/Table";
-import Paginate from "Components/Pagination";
+import Paginate from "Components/OldPagination";
 import Footer from "Components/Footer";
 import styles from "../Student/AllStudents/style.module.scss";
 
