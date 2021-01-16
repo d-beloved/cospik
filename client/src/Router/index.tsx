@@ -7,6 +7,7 @@ import Courses from 'Pages/Courses';
 import OneStudent from 'Pages/Student/StudentDetails';
 import NotFound from 'Pages/NotFound';
 import Notify from 'Components/Notify';
+import Protected from 'Components/Protected';
 
 export default function Routes() {
   return (
@@ -15,9 +16,9 @@ export default function Routes() {
       <Switch>
         <Route exact path= '/' component={Signup} />
         <Route exact path= '/login' component={Login} />
-        <Route exact path= '/students' component={Students} />
-        <Route exact path= '/courses' component={Courses} />
-        <Route path= '/student/:id' component={OneStudent} />
+        <Protected exact path= '/students' Component={Students} />
+        <Protected exact path= '/courses' Component={Courses} />
+        <Protected path= '/student/:id' Component={OneStudent} />
         <Route path= '*' component={NotFound} />
       </Switch>
     </Router>
