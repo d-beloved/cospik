@@ -42,7 +42,7 @@ export default function AllStudents() {
           ) : (
             students && students.student &&
             <div>
-              <InfoTable trigger="student" header={tableHeader} tableData={students.student} redirectTo />
+              <InfoTable trigger="student" header={tableHeader} tableData={students.student.students} redirectTo />
               <Paginate />
             </div>
           )}

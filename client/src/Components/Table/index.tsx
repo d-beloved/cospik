@@ -10,7 +10,7 @@ interface Props {
   trigger: string;
   header?: Array<string>;
   redirectTo?: boolean;
-  tableData?: Object;
+  tableData?: Object[];
 }
 
 export default function InfoTable({
@@ -35,38 +35,25 @@ export default function InfoTable({
           <thead>
             <tr>
               {header?.map((title, i) => (
-                <th>{title}</th>
+                <th key={i}>{title}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr>
-              {tableData?}
-              <Link to="/student/1">
-                <td>Mark</td>
-              </Link>
-              <td>Otto</td>
-              <td>mark.otto@gmail.com</td>
-              <td>Not Enrolled</td>
-              <td>
-                {trigger !== "oneStudent" ? (
-                  <span
-                    onClick={
-                      trigger === "student"
-                        ? handleStudentModal
-                        : handleCourseModal
-                    }
-                  >
-                    Edit
-                  </span>
-                ) : null}{" "}
-                {trigger !== "student" ? (
-                  <span>
-                    {trigger === "oneStudent" ? "Remove Course" : "Delete"}
-                  </span>
-                ) : null}
-              </td>
-            </tr>
+            {tableData &&
+              tableData.map((entry: any, i) => (
+                <tr>
+                  <Link to={`/student/${entry.student_id}`}>
+                    <td>{entry.firstname}</td>
+                  </Link>
+                  <td>{entry.lastname}</td>
+                  <td>{entry.email}</td>
+                  <td>{entry.status}</td>
+                  <td>
+                    <span onClick={handleStudentModal}>Edit</span>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
