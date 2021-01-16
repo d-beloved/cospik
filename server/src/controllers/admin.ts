@@ -37,8 +37,8 @@ class AdminController {
             client.release();
             const newAdmin = createdAdmin.rows[0];
             // create the token after all the inputs are certified ok
-            const { username } = newAdmin;
-            const authToken = createToken({ username }, secretKey);
+            const { username,id } = newAdmin;
+            const authToken = createToken({ username, id }, secretKey);
             const { password, ...rest } = newAdmin;
             res.status(201).json({
               message: 'Admin created successfully',
