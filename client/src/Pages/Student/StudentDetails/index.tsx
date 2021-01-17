@@ -36,7 +36,7 @@ export default function OneStudent() {
                 Add Course
               </p>
             </div>
-            <Table trigger="oneStudent" />
+            {/* <Table trigger="oneStudent" /> */}
             <Paginate />
           </div>
         </div>

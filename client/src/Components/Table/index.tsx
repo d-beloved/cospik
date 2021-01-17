@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Paginate from "react-js-pagination";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -9,14 +10,20 @@ import styles from "./style.module.scss";
 interface Props {
   trigger: string;
   header?: Array<string>;
-  tableData?: Object[];
+  tableData: Object[];
 }
 
-export default function InfoTable({
-  trigger,
-  header,
-  tableData,
-}: Props) {
+interface tableState {
+  activePage: number;
+  itemsPerPage: number;
+}
+
+export default function InfoTable({ trigger, header, tableData }: Props) {
+  const [state, setState] = useState<tableState>({
+    activePage: 1,
+    itemsPerPage: 1,
+  });
+
   const [editStudentModal, setStudentModal] = useState(false);
   const [editCourseModal, setCourseModal] = useState(false);
 
@@ -25,6 +32,15 @@ export default function InfoTable({
 
   const handleCloseCourse = () => setCourseModal(false);
   const handleCourseModal = () => setCourseModal(true);
+
+  const handlePageChange = (pageNumber: number) => {
+    setState({ ...state, activePage: pageNumber });
+  };
+
+  // for the pagination data
+  const idxOfLastEntry = state.activePage * state.itemsPerPage;
+  const idxOfFirstEntry = idxOfLastEntry - state.itemsPerPage;
+  const pagedTableData = tableData.slice(idxOfFirstEntry, idxOfLastEntry);
 
   return (
     <>
@@ -38,8 +54,8 @@ export default function InfoTable({
             </tr>
           </thead>
           <tbody>
-            {tableData &&
-              tableData.map((entry: any, i) => (
+            {pagedTableData &&
+              pagedTableData.map((entry: any, i) => (
                 <tr>
                   <Link to={`/student/${entry.student_id}`}>
                     <td>{entry.firstname}</td>
@@ -54,6 +70,17 @@ export default function InfoTable({
               ))}
           </tbody>
         </Table>
+        {tableData && (
+          <Paginate
+            activePage={state.activePage}
+            itemsCountPerPage={state.itemsPerPage}
+            totalItemsCount={tableData.length}
+            pageRangeDisplayed={3}
+            onChange={handlePageChange}
+            itemClass="page-item"
+            linkClass="page-link"
+          />
+        )}
       </div>
 
       {/* modals to be shown on the page */}
