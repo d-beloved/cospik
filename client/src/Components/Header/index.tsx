@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useMappedState } from "redux-react-hook";
 import { logoutAdmin } from "Store/actions/auth.action";
 import { createStudent, getStudents } from "Store/actions/student.action";
+import { createCourse, getCourses } from "Store/actions/course.action";
 import Navbar from "react-bootstrap/Navbar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -23,11 +24,18 @@ interface createDataState {
   email: string;
 }
 
+interface createCourseState {
+  courseName: string;
+}
+
 export default function Header({ action, goTo, goToLink, trigger }: Props) {
   const [state, setState] = useState<createDataState>({
     firstname: "",
     lastname: "",
     email: "",
+  });
+  const [addCourse, setAddCourse] = useState<createCourseState>({
+    courseName: ""
   });
   const [studentModal, setStudentModal] = useState(false);
   const [courseModal, setCourseModal] = useState(false);
@@ -37,7 +45,11 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
   const loading = useMappedState(
     ({ addStudentReducer }: any) => addStudentReducer
   );
+  const courseLoading = useMappedState(
+    ({ addCourseReducer }: any) => addCourseReducer
+  );
 
+  const handleStudentModal = () => setStudentModal(true);
   const handleCloseStudent = () => {
     setState({
       ...state,
@@ -47,10 +59,15 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
     });
     setStudentModal(false);
   };
-  const handleStudentModal = () => setStudentModal(true);
 
-  const handleCloseCourse = () => setCourseModal(false);
   const handleCourseModal = () => setCourseModal(true);
+  const handleCloseCourse = () => {
+    setAddCourse({
+      ...addCourse,
+      courseName: ""
+    });
+    setCourseModal(false);
+  };
 
   const createStudentAction = (e: any) => {
     e && e.preventDefault();
@@ -60,9 +77,23 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
     }));
   };
 
+  const createCourseAction = (e: any) => {
+    e && e.preventDefault();
+    dispatch(createCourse({ ...addCourse }, () => {
+      dispatch(getCourses());
+      handleCloseCourse();
+    }));
+  };
+
   const setValue = (e: any) =>
     setState({
       ...state,
+      [e.target.name]: e.target.value,
+    });
+
+    const setCourseValue = (e: any) =>
+    setAddCourse({
+      ...addCourse,
       [e.target.name]: e.target.value,
     });
 
@@ -190,7 +221,13 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
             <Form className={styles.form}>
               <Form.Group controlId="courseName">
                 <Form.Label>Course Name</Form.Label>
-                <Form.Control type="text" placeholder="enter the course name" />
+                <Form.Control
+                  type="text"
+                  placeholder="enter the course name"
+                  name="courseName"
+                  value={addCourse.courseName}
+                  onChange={setCourseValue}
+                />
               </Form.Group>
             </Form>
           </div>
@@ -199,8 +236,12 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
           <Button variant="grey" onClick={handleCloseCourse}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseCourse}>
-            Save Changes
+          <Button variant="primary" onClick={createCourseAction} disabled={
+              (addCourse.courseName === "" ||
+                courseLoading.loading) &&
+              true
+            }>
+              {courseLoading.loading ? "Adding..." : "Add Course"}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -33,7 +33,7 @@ export const createCourse = (
   dispatch(actionCreator(ADD_COURSE_REQUEST));
   try {
     const { data: response } = await Axios.post("/course", {
-      courseName
+      course_name: courseName
     });
     dispatch(
       actionCreator(ADD_COURSE_SUCCESS, {
