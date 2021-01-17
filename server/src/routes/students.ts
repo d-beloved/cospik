@@ -10,6 +10,7 @@ routes.post('/',
   authenticate,
   Validation.checkBodyContains('firstname', 'lastname', 'email'),
   Validation.trimsRequestBody,
+  Validation.confirmEmail,
   ifStudentExists,
   StudentController.createStudent
 );

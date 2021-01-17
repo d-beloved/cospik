@@ -24,10 +24,10 @@ routes.delete('/:courseId',
   CourseController.deleteCourse
 );
 
-routes.put('/:courseId',
-  authenticate,
-  Validation.trimsRequestBody,
-  CourseController.updateCourse
-);
+// routes.put('/:courseId',
+//   authenticate,
+//   Validation.trimsRequestBody,
+//   CourseController.updateCourse
+// );
 
 export default routes;

@@ -34,10 +34,10 @@ export default function AllStudents() {
           trigger="student"
         />
         <div className={styles.content}>
-          <p>
+          <div className={styles.more}>
             <h1 className={styles.heading}>All Students</h1>
             <hr />
-          </p>
+          </div>
           {loading ? (
             <Spinner className={styles.loader} animation="grow" role="status">
               <span className="sr-only">Loading...</span>

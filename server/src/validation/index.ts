@@ -12,21 +12,6 @@ class Validation {
     next();
   }
 
-  static checkIfString(...params) {
-    return (req, res, next) => {
-      for (const p of params) {
-        const value = req.body[p];
-        if (typeof value !== 'string') {
-          return res.status(400).send({
-            message: `${p} must be a string value!`,
-            success: false
-          });
-        }
-      }
-      next();
-    };
-  }
-
   static checkBodyContains(...params) {
     return (req, res, next) => {
       for (const p of params) {
@@ -39,6 +24,17 @@ class Validation {
       }
       next();
     };
+  }
+
+  static confirmEmail(req, res, next) {
+    // checks if the email entered is valid
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email) === false) {
+      return res.status(406).send({
+        message: 'Please enter a valid email',
+        success: false
+      });
+    }
+    return next();
   }
 }
 

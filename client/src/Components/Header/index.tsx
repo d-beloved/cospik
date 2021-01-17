@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch, useMappedState } from 'redux-react-hook';
+import { useDispatch, useMappedState } from "redux-react-hook";
 import { logoutAdmin } from "Store/actions/auth.action";
+import { createStudent, getStudents } from "Store/actions/student.action";
 import Navbar from "react-bootstrap/Navbar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -16,17 +17,54 @@ interface Props {
   trigger?: string;
 }
 
+interface createDataState {
+  firstname: string;
+  lastname: string;
+  email: string;
+}
+
 export default function Header({ action, goTo, goToLink, trigger }: Props) {
+  const [state, setState] = useState<createDataState>({
+    firstname: "",
+    lastname: "",
+    email: "",
+  });
   const [studentModal, setStudentModal] = useState(false);
   const [courseModal, setCourseModal] = useState(false);
   const dispatch = useDispatch();
 
   const user = useMappedState(({ adminReducer }: any) => adminReducer);
-  const handleCloseStudent = () => setStudentModal(false);
+  const loading = useMappedState(
+    ({ addStudentReducer }: any) => addStudentReducer
+  );
+
+  const handleCloseStudent = () => {
+    setState({
+      ...state,
+      firstname: "",
+      lastname: "",
+      email: "",
+    });
+    setStudentModal(false);
+  };
   const handleStudentModal = () => setStudentModal(true);
 
   const handleCloseCourse = () => setCourseModal(false);
   const handleCourseModal = () => setCourseModal(true);
+
+  const createStudentAction = (e: any) => {
+    e && e.preventDefault();
+    dispatch(createStudent({ ...state }, () => {
+      dispatch(getStudents());
+      handleCloseStudent();
+    }));
+  };
+
+  const setValue = (e: any) =>
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
 
   const logout = () => {
     dispatch(logoutAdmin());
@@ -60,13 +98,15 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
             </Nav.Link>
             <Navbar.Text id={styles.user}>{user.user.username}</Navbar.Text>
             {user.isAuthenticated && (
-              <Navbar.Text onClick={logout} id={styles.logout}>logout</Navbar.Text>
+              <Navbar.Text onClick={logout} id={styles.logout}>
+                logout
+              </Navbar.Text>
             )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
 
-      {/* modals to be shown on the page */}
+      {/* Add new student Modal */}
       <Modal
         show={studentModal}
         onHide={handleCloseStudent}
@@ -81,17 +121,35 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
             <Form className={styles.form}>
               <Form.Group controlId="fname">
                 <Form.Label>Firstname</Form.Label>
-                <Form.Control type="text" placeholder="" />
+                <Form.Control
+                  type="text"
+                  name="firstname"
+                  value={state.firstname}
+                  placeholder=""
+                  onChange={setValue}
+                />
               </Form.Group>
 
               <Form.Group controlId="lname">
                 <Form.Label>Lastname</Form.Label>
-                <Form.Control type="text" placeholder="" />
+                <Form.Control
+                  type="text"
+                  name="lastname"
+                  value={state.lastname}
+                  placeholder=""
+                  onChange={setValue}
+                />
               </Form.Group>
 
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="" />
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={state.email}
+                  placeholder=""
+                  onChange={setValue}
+                />
               </Form.Group>
             </Form>
           </div>
@@ -100,12 +158,24 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
           <Button variant="gray" onClick={handleCloseStudent}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseStudent}>
-            Save Changes
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={createStudentAction}
+            disabled={
+              (state.firstname === "" ||
+                state.lastname === "" ||
+                state.email === "" ||
+                loading.loading) &&
+              true
+            }
+          >
+            {loading.loading ? "Adding..." : "Add Student"}
           </Button>
         </Modal.Footer>
       </Modal>
 
+      {/* Add new course Modal */}
       <Modal
         show={courseModal}
         onHide={handleCloseCourse}

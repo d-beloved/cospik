@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useMappedState } from "redux-react-hook";
+import { updateStudent, getStudents } from "Store/actions/student.action";
 import Paginate from "react-js-pagination";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -10,7 +12,7 @@ import styles from "./style.module.scss";
 interface Props {
   trigger: string;
   header?: Array<string>;
-  tableData: Object[];
+  tableData: any[];
 }
 
 interface tableState {
@@ -18,17 +20,63 @@ interface tableState {
   itemsPerPage: number;
 }
 
-export default function InfoTable({ trigger, header, tableData }: Props) {
-  const [state, setState] = useState<tableState>({
-    activePage: 1,
-    itemsPerPage: 1,
-  });
+interface studentState {
+  firstname: string;
+  lastname: string;
+  id: string;
+}
 
+export default function InfoTable({ trigger, header, tableData }: Props) {
+  const dispatch = useDispatch();
   const [editStudentModal, setStudentModal] = useState(false);
   const [editCourseModal, setCourseModal] = useState(false);
+  const [state, setState] = useState<tableState>({
+    activePage: 1,
+    itemsPerPage: 6,
+  });
+  const [student, setStudent] = useState<studentState>({
+    firstname: "",
+    lastname: "",
+    id: "",
+  });
 
-  const handleCloseStudent = () => setStudentModal(false);
-  const handleStudentModal = () => setStudentModal(true);
+  const loading = useMappedState(
+    ({ updateStudentReducer }: any) => updateStudentReducer
+  );
+
+  const updateStudentAction = (e: any) => {
+    e && e.preventDefault();
+    dispatch(
+      updateStudent({ ...student }, () => {
+        dispatch(getStudents());
+        handleCloseStudent();
+      })
+    );
+  };
+
+  const setValue = (e: any) =>
+    setStudent({
+      ...student,
+      [e.target.name]: e.target.value,
+    });
+
+  const handleCloseStudent = () => {
+    setStudent({
+      ...student,
+      firstname: "",
+      lastname: "",
+      id: "",
+    });
+    setStudentModal(false);
+  };
+
+  const handleStudentModal = (passedId: string) => {
+    setStudent({
+      ...student,
+      id: passedId,
+    });
+    setStudentModal(true);
+  };
 
   const handleCloseCourse = () => setCourseModal(false);
   const handleCourseModal = () => setCourseModal(true);
@@ -54,9 +102,10 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
             </tr>
           </thead>
           <tbody>
-            {pagedTableData &&
+            {trigger === "student" &&
+              pagedTableData &&
               pagedTableData.map((entry: any, i) => (
-                <tr>
+                <tr key={i}>
                   <Link to={`/student/${entry.student_id}`}>
                     <td>{entry.firstname}</td>
                   </Link>
@@ -64,26 +113,30 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
                   <td>{entry.email}</td>
                   <td>{entry.status}</td>
                   <td>
-                    <span onClick={handleStudentModal}>Edit</span>
+                    <span onClick={() => handleStudentModal(entry.student_id)}>
+                      Edit
+                    </span>
                   </td>
                 </tr>
               ))}
           </tbody>
         </Table>
         {tableData && (
-          <Paginate
-            activePage={state.activePage}
-            itemsCountPerPage={state.itemsPerPage}
-            totalItemsCount={tableData.length}
-            pageRangeDisplayed={3}
-            onChange={handlePageChange}
-            itemClass="page-item"
-            linkClass="page-link"
-          />
+          <div className={styles.paginate}>
+            <Paginate
+              activePage={state.activePage}
+              itemsCountPerPage={state.itemsPerPage}
+              totalItemsCount={tableData.length}
+              pageRangeDisplayed={3}
+              onChange={handlePageChange}
+              itemClass="page-item"
+              linkClass="page-link"
+            />
+          </div>
         )}
       </div>
 
-      {/* modals to be shown on the page */}
+      {/* Update student modal */}
       <Modal
         show={editStudentModal}
         onHide={handleCloseStudent}
@@ -96,24 +149,43 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
         <Modal.Body>
           <div>
             <Form className={styles.form}>
-              <Form.Group controlId="fname">
-                <Form.Label>Firstname</Form.Label>
-                <Form.Control type="text" defaultValue="current name" />
-              </Form.Group>
+              {pagedTableData &&
+                pagedTableData
+                  .filter((one) => one.student_id === student.id)
+                  .map((entry: any, i) => (
+                    <>
+                      <Form.Group controlId="fname">
+                        <Form.Label>Firstname</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="firstname"
+                          value={student.firstname}
+                          placeholder={entry.firstname}
+                          onChange={setValue}
+                        />
+                      </Form.Group>
 
-              <Form.Group controlId="lname">
-                <Form.Label>Lastname</Form.Label>
-                <Form.Control type="text" defaultValue=" current name" />
-              </Form.Group>
+                      <Form.Group controlId="lname">
+                        <Form.Label>Lastname</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="lastname"
+                          value={student.lastname}
+                          placeholder={entry.lastname}
+                          onChange={setValue}
+                        />
+                      </Form.Group>
 
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  defaultValue="emailofuser@@gmail.com"
-                  disabled
-                />
-              </Form.Group>
+                      <Form.Group controlId="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                          type="email"
+                          defaultValue={entry.email}
+                          disabled
+                        />
+                      </Form.Group>
+                    </>
+                  ))}
             </Form>
           </div>
         </Modal.Body>
@@ -121,8 +193,12 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
           <Button variant="gray" onClick={handleCloseStudent}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseStudent}>
-            Save Changes
+          <Button
+            variant="primary"
+            onClick={updateStudentAction}
+            disabled={(student.firstname === "" || loading.loading) && true}
+          >
+            {loading.loading ? "Saving..." : "Save Changes"}
           </Button>
         </Modal.Footer>
       </Modal>

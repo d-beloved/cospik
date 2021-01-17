@@ -1,5 +1,12 @@
 @import '../../Assets/styles/breakpoint';
 
 .info {
+  display: flex;
+  flex-direction: column;
   padding: 0 1rem;
+  min-height: 10rem;
+
+  .paginate {
+    margin: 5rem auto;
+  }
 }
