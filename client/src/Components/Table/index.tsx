@@ -119,6 +119,18 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
                   </td>
                 </tr>
               ))}
+              {trigger === "course" &&
+              pagedTableData &&
+              pagedTableData.map((entry: any, i) => (
+                <tr key={i}>
+                  <td>{entry.course_name}</td>
+                  <td>
+                    <span onClick={() => handleStudentModal(entry.course_id)}>
+                      Delete
+                    </span>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
         {tableData && (
