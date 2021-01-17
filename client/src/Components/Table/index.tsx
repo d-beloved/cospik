@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useMappedState } from "redux-react-hook";
 import { updateStudent, getStudents } from "Store/actions/student.action";
+import { deleteCourse, getCourses } from "Store/actions/course.action";
 import Paginate from "react-js-pagination";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -29,7 +30,7 @@ interface studentState {
 export default function InfoTable({ trigger, header, tableData }: Props) {
   const dispatch = useDispatch();
   const [editStudentModal, setStudentModal] = useState(false);
-  const [editCourseModal, setCourseModal] = useState(false);
+  // const [editCourseModal, setCourseModal] = useState(false);
   const [state, setState] = useState<tableState>({
     activePage: 1,
     itemsPerPage: 6,
@@ -44,6 +45,10 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
     ({ updateStudentReducer }: any) => updateStudentReducer
   );
 
+  const courseLoading = useMappedState(
+    ({ deleteCourseReducer }: any) => deleteCourseReducer
+  );
+
   const updateStudentAction = (e: any) => {
     e && e.preventDefault();
     dispatch(
@@ -54,12 +59,27 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
     );
   };
 
+  const deleteCourseAction = (passedId: string) => {
+    dispatch(
+      deleteCourse({ id: passedId }, () => {
+        dispatch(getCourses());
+      })
+    );
+  };
+
   const setValue = (e: any) =>
     setStudent({
       ...student,
       [e.target.name]: e.target.value,
     });
 
+  const handleStudentModal = (passedId: string) => {
+    setStudent({
+      ...student,
+      id: passedId,
+    });
+    setStudentModal(true);
+  };
   const handleCloseStudent = () => {
     setStudent({
       ...student,
@@ -70,16 +90,10 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
     setStudentModal(false);
   };
 
-  const handleStudentModal = (passedId: string) => {
-    setStudent({
-      ...student,
-      id: passedId,
-    });
-    setStudentModal(true);
-  };
 
-  const handleCloseCourse = () => setCourseModal(false);
-  const handleCourseModal = () => setCourseModal(true);
+  // const handleDeleteCourse = () => setCourseModal(true);
+
+  // const handleCloseCourse = () => setCourseModal(false);
 
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, activePage: pageNumber });
@@ -119,13 +133,16 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
                   </td>
                 </tr>
               ))}
-              {trigger === "course" &&
+            {trigger === "course" &&
               pagedTableData &&
               pagedTableData.map((entry: any, i) => (
                 <tr key={i}>
                   <td>{entry.course_name}</td>
                   <td>
-                    <span onClick={() => handleStudentModal(entry.course_id)}>
+                    <span
+                      id={courseLoading.loading && styles.dont}
+                      onClick={() => deleteCourseAction(entry.course_id)}
+                    >
                       Delete
                     </span>
                   </td>
@@ -214,8 +231,8 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      <Modal
+      {/* Update course modal */}
+      {/* <Modal
         show={editCourseModal}
         onHide={handleCloseCourse}
         backdrop="static"
@@ -242,7 +259,7 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
             Save Changes
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
