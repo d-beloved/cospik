@@ -22,40 +22,18 @@ const initialState: CourseProps = {
   error: null,
 }
 
-export const courseReducer = (state = initialState, action: any): any => {
+const courseReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case GET_ALLCOURSES_REQUEST:
-      return { ...state, loading: true };
-    case GET_ALLCOURSES_FAILURE:
-      return { ...state, loading: false, error: action.payload };
-    case GET_ALLCOURSES_SUCCESS:
-      return { ...state, loading: false, error: null, course: action.payload };
-
-    default:
-      return state;
-  }
-}
-
-export const addCourseReducer = (state = initialState, action: any): any => {
-  switch (action.type) {
     case ADD_COURSE_REQUEST:
-      return { ...state, loading: true };
-    case ADD_COURSE_FAILURE:
-      return { ...state, loading: false, error: action.payload };
-    case ADD_COURSE_SUCCESS:
-      return { ...state, loading: false, error: null, course: action.payload };
-
-    default:
-      return state;
-  }
-}
-
-export const deleteCourseReducer = (state = initialState, action: any): any => {
-  switch (action.type) {
     case DELETE_COURSE_REQUEST:
       return { ...state, loading: true };
+    case GET_ALLCOURSES_FAILURE:
+    case ADD_COURSE_FAILURE:
     case DELETE_COURSE_FAILURE:
       return { ...state, loading: false, error: action.payload };
+    case GET_ALLCOURSES_SUCCESS:
+    case ADD_COURSE_SUCCESS:
     case DELETE_COURSE_SUCCESS:
       return { ...state, loading: false, error: null, course: action.payload };
 
@@ -63,3 +41,32 @@ export const deleteCourseReducer = (state = initialState, action: any): any => {
       return state;
   }
 }
+
+export default courseReducer;
+// export const addCourseReducer = (state = initialState, action: any): any => {
+//   switch (action.type) {
+//     case ADD_COURSE_REQUEST:
+//       return { ...state, loading: true };
+//     case ADD_COURSE_FAILURE:
+//       return { ...state, loading: false, error: action.payload };
+//     case ADD_COURSE_SUCCESS:
+//       return { ...state, loading: false, error: null, course: action.payload };
+
+//     default:
+//       return state;
+//   }
+// }
+
+// export const deleteCourseReducer = (state = initialState, action: any): any => {
+//   switch (action.type) {
+//     case DELETE_COURSE_REQUEST:
+//       return { ...state, loading: true };
+//     case DELETE_COURSE_FAILURE:
+//       return { ...state, loading: false, error: action.payload };
+//     case DELETE_COURSE_SUCCESS:
+//       return { ...state, loading: false, error: null, course: action.payload };
+
+//     default:
+//       return state;
+//   }
+// }

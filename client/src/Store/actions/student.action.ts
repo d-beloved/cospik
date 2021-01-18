@@ -10,7 +10,10 @@ import {
   ADD_STUDENT_SUCCESS,
   EDIT_STUDENT_FAILURE,
   EDIT_STUDENT_REQUEST,
-  EDIT_STUDENT_SUCCESS
+  EDIT_STUDENT_SUCCESS,
+  GET_STUDENT_REQUEST,
+  GET_STUDENT_SUCCESS,
+  GET_STUDENT_FAILURE,
 } from 'Store/constants';
 
 export const getStudents = (action?: () => void,
@@ -98,5 +101,30 @@ export const updateStudent = (
         }));
     }
     return dispatch(actionCreator(EDIT_STUDENT_FAILURE, "unable to update student at the moment"));
+  }
+};
+
+export const getOneStudent = (
+  { id }: { id: string }, action?: () => void, errorAction?: () => void,
+) => async (dispatch: any) => {
+  dispatch(actionCreator(GET_STUDENT_REQUEST));
+  try {
+    const { data: response } = await Axios.get(`/student/${id}`);
+    const { message, ...rest } = response;
+    dispatch(actionCreator(GET_STUDENT_SUCCESS, rest));
+
+    return action && action();
+  } catch (error) {
+    errorAction && errorAction();
+    if (error.response) {
+      dispatch(actionCreator(GET_STUDENT_FAILURE, error.response));
+      dispatch(
+        setNotify({
+          title: 'Error',
+          body: error.response.data.message,
+          type: 'error'
+        }));
+    }
+    return dispatch(actionCreator(GET_STUDENT_FAILURE, "unable to display student at the moment"));
   }
 };

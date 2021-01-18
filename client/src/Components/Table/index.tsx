@@ -90,7 +90,6 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
     setStudentModal(false);
   };
 
-
   // const handleDeleteCourse = () => setCourseModal(true);
 
   // const handleCloseCourse = () => setCourseModal(false);
@@ -107,61 +106,84 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
   return (
     <>
       <div className={styles.info}>
-        <Table striped hover responsive="lg" borderless>
-          <thead>
-            <tr>
-              {header?.map((title, i) => (
-                <th key={i}>{title}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {trigger === "student" &&
-              pagedTableData &&
-              pagedTableData.map((entry: any, i) => (
-                <tr key={i}>
-                  <Link to={`/student/${entry.student_id}`}>
-                    <td>{entry.firstname}</td>
-                  </Link>
-                  <td>{entry.lastname}</td>
-                  <td>{entry.email}</td>
-                  <td>{entry.status}</td>
-                  <td>
-                    <span onClick={() => handleStudentModal(entry.student_id)}>
-                      Edit
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            {trigger === "course" &&
-              pagedTableData &&
-              pagedTableData.map((entry: any, i) => (
-                <tr key={i}>
-                  <td>{entry.course_name}</td>
-                  <td>
-                    <span
-                      id={courseLoading.loading && styles.dont}
-                      onClick={() => deleteCourseAction(entry.course_id)}
-                    >
-                      Delete
-                    </span>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        {tableData && (
-          <div className={styles.paginate}>
-            <Paginate
-              activePage={state.activePage}
-              itemsCountPerPage={state.itemsPerPage}
-              totalItemsCount={tableData.length}
-              pageRangeDisplayed={3}
-              onChange={handlePageChange}
-              itemClass="page-item"
-              linkClass="page-link"
-            />
+        {tableData && tableData.length === 0 ? (
+          <div className={styles.nodata}>
+            <h3>No Data to Show</h3>
           </div>
+        ) : (
+          <>
+            <Table striped hover responsive="lg" borderless>
+              <thead>
+                <tr>
+                  {header?.map((title, i) => (
+                    <th key={i}>{title}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {trigger === "student" &&
+                  pagedTableData &&
+                  pagedTableData.map((entry: any, i) => (
+                    <tr key={i}>
+                      <Link to={`/student/${entry.student_id}`}>
+                        <td>{entry.firstname}</td>
+                      </Link>
+                      <td>{entry.lastname}</td>
+                      <td>{entry.email}</td>
+                      <td>{entry.status}</td>
+                      <td>
+                        <span
+                          onClick={() => handleStudentModal(entry.student_id)}
+                        >
+                          Edit
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                {trigger === "course" &&
+                  pagedTableData &&
+                  pagedTableData.map((entry: any, i) => (
+                    <tr key={i}>
+                      <td>{entry.course_name}</td>
+                      <td>
+                        <span
+                          id={courseLoading.loading && styles.dont}
+                          onClick={() => deleteCourseAction(entry.course_id)}
+                        >
+                          Delete
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                {trigger === "oneStudent" &&
+                  pagedTableData &&
+                  pagedTableData.map((entry: any, i) => (
+                    <tr key={i}>
+                      <td>{entry.cos_name}</td>
+                      <td>
+                        <span
+                          id={courseLoading.loading && styles.dont}
+                          onClick={() => deleteCourseAction(entry.course_id)}
+                        >
+                          unenroll
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+            <div className={styles.paginate}>
+              <Paginate
+                activePage={state.activePage}
+                itemsCountPerPage={state.itemsPerPage}
+                totalItemsCount={tableData.length}
+                pageRangeDisplayed={3}
+                onChange={handlePageChange}
+                itemClass="page-item"
+                linkClass="page-link"
+              />
+            </div>
+          </>
         )}
       </div>
 

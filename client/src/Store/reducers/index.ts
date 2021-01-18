@@ -1,18 +1,16 @@
 import { combineReducers } from "redux";
 import adminReducer from "./auth.reducer";
-import { studentReducer, addStudentReducer, updateStudentReducer } from "./student.reducer";
-import { courseReducer, addCourseReducer, deleteCourseReducer } from "./course.reducer";
+import studentReducer from "./student.reducer";
+import courseReducer from "./course.reducer";
+import adminActionsReducer from "./adminActions.reducer";
 import notify from "./notify.reducer";
 
 const rootReducer = combineReducers({
   adminReducer,
   studentReducer,
-  addStudentReducer,
-  updateStudentReducer,
   notify,
   courseReducer,
-  addCourseReducer,
-  deleteCourseReducer,
+  adminActionsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
