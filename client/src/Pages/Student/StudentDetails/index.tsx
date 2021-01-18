@@ -51,7 +51,6 @@ export default function OneStudent({ match }: Props) {
   const [enrollForCourseModal, setEnrollModal] = useState(false);
 
   const handleEnrollModal = () => {
-    dispatch(getCourses());
     setEnrollModal(true);
   }
 
@@ -82,8 +81,8 @@ export default function OneStudent({ match }: Props) {
       ...state,
       studentId: id,
     });
-    // console.log("I got here", id, state)
     dispatch(getOneStudent({ id }));
+    dispatch(getCourses());
   }, [dispatch]);
 
   const enrollCourseAction = (e: any) => {
@@ -137,6 +136,7 @@ export default function OneStudent({ match }: Props) {
                     trigger="oneStudent"
                     header={tableHeader}
                     tableData={student.student.enrolled_courses}
+                    parameter={state.studentId}
                   />
                 )}
               </div>

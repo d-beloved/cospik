@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useMappedState } from "redux-react-hook";
-import { updateStudent, getStudents } from "Store/actions/student.action";
+import { updateStudent, getStudents, getOneStudent } from "Store/actions/student.action";
 import { deleteCourse, getCourses } from "Store/actions/course.action";
+import { unenrollStudent } from "Store/actions/adminActions.action";
 import Paginate from "react-js-pagination";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -14,6 +15,7 @@ interface Props {
   trigger: string;
   header?: Array<string>;
   tableData: any[];
+  parameter?: any;
 }
 
 interface tableState {
@@ -27,7 +29,7 @@ interface studentState {
   id: string;
 }
 
-export default function InfoTable({ trigger, header, tableData }: Props) {
+export default function InfoTable({ trigger, header, tableData, parameter }: Props) {
   const dispatch = useDispatch();
   const [editStudentModal, setStudentModal] = useState(false);
   // const [editCourseModal, setCourseModal] = useState(false);
@@ -49,6 +51,14 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
     ({ courseReducer }: any) => courseReducer
   );
 
+  const oneStudent = useMappedState(
+    ({ oneStudentReducer }: any) => oneStudentReducer
+    );
+
+  const unenroll = useMappedState(
+    ({ adminActionsReducer }: any) => adminActionsReducer
+  );
+
   const updateStudentAction = (e: any) => {
     e && e.preventDefault();
     dispatch(
@@ -63,6 +73,15 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
     dispatch(
       deleteCourse({ id: passedId }, () => {
         dispatch(getCourses());
+      })
+    );
+  };
+
+  const unenrollStudentAction = (courseId: string) => {
+    const studentId = parameter;
+    dispatch(
+      unenrollStudent({ courseId, studentId }, () => {
+        dispatch(getOneStudent({ id: studentId }));
       })
     );
   };
@@ -162,8 +181,8 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
                       <td>{entry.cos_name}</td>
                       <td>
                         <span
-                          id={courseLoading.loading && styles.dont}
-                          onClick={() => deleteCourseAction(entry.course_id)}
+                          id={unenroll.loading && styles.dont}
+                          onClick={() => unenrollStudentAction(entry.cos_id)}
                         >
                           unenroll
                         </span>
