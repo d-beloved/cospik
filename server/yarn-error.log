@@ -1,30 +1,17 @@
 Arguments: 
-  /usr/local/bin/node /Users/ayodejimoronkeji/.yarn/bin/yarn.js add @types/body-parseer @types/pg @types/morgan @types/bcrypt @types/jsonwebtoken -D
+  /usr/local/bin/node /opt/yarn-v1.5.1/bin/yarn.js install
 
 PATH: 
-  /Users/ayodejimoronkeji/.yarn/bin:/Users/ayodejimoronkeji/.config/yarn/global/node_modules/.bin:/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/mysql/bin:/usr/local/mysql/support-files
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 Yarn version: 
-  1.22.4
+  1.5.1
 
 Node version: 
-  12.4.0
+  9.11.2
 
 Platform: 
-  darwin x64
-
-Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fbody-parseer: Not found
-      at Request.params.callback [as _callback] (/Users/ayodejimoronkeji/.yarn/lib/cli.js:66987:18)
-      at Request.self.callback (/Users/ayodejimoronkeji/.yarn/lib/cli.js:140748:22)
-      at Request.emit (events.js:200:13)
-      at Request.<anonymous> (/Users/ayodejimoronkeji/.yarn/lib/cli.js:141720:10)
-      at Request.emit (events.js:200:13)
-      at IncomingMessage.<anonymous> (/Users/ayodejimoronkeji/.yarn/lib/cli.js:141642:12)
-      at Object.onceWrapper (events.js:288:20)
-      at IncomingMessage.emit (events.js:205:15)
-      at endReadableNT (_stream_readable.js:1154:12)
-      at processTicksAndRejections (internal/process/task_queues.js:84:9)
+  linux x64
 
 npm manifest: 
   {
@@ -33,8 +20,10 @@ npm manifest:
     "description": "An app that allows a university admin to pick a course for students",
     "main": "index.js",
     "scripts": {
-      "start": "nodemon src/index.ts",
-      "db-migrate": "ts-node ./src/db/db.ts",
+      "start": "yarn run migrate && yarn run check-types && node build/index.js",
+      "check-types": "tsc",
+      "dev": "nodemon src/index.ts",
+      "migrate": "ts-node ./src/db/db.ts",
       "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
@@ -48,7 +37,12 @@ npm manifest:
       "@babel/cli": "^7.12.10",
       "@babel/core": "^7.12.10",
       "@babel/preset-typescript": "^7.12.7",
+      "@types/bcrypt": "^3.0.0",
+      "@types/body-parser": "^1.19.0",
       "@types/express": "^4.17.9",
+      "@types/jsonwebtoken": "^8.5.0",
+      "@types/morgan": "^1.9.2",
+      "@types/pg": "^7.14.7",
       "nodemon": "^2.0.7",
       "ts-node": "^9.1.1",
       "tslint": "^6.1.3",
@@ -340,7 +334,12 @@ Lockfile:
     dependencies:
       defer-to-connect "^1.0.1"
   
-  "@types/body-parser@*":
+  "@types/bcrypt@^3.0.0":
+    version "3.0.0"
+    resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-3.0.0.tgz#851489a9065a067cb7f3c9cbe4ce9bed8bba0876"
+    integrity sha512-nohgNyv+1ViVcubKBh0+XiNJ3dO8nYu///9aJ4cgSqv70gBL+94SNy/iC2NLzKPT2Zt/QavrOkBVbZRLZmw6NQ==
+  
+  "@types/body-parser@*", "@types/body-parser@^1.19.0":
     version "1.19.0"
     resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.0.tgz#0685b3c47eb3006ffed117cdd55164b61f80538f"
     integrity sha512-W98JrE0j2K78swW4ukqMleo8R7h/pFETjM2DQ90MF6XK2i4LO4W3gQ71Lt4w3bfm2EvVSyWHplECvB5sK22yFQ==
@@ -374,15 +373,42 @@ Lockfile:
       "@types/qs" "*"
       "@types/serve-static" "*"
   
+  "@types/jsonwebtoken@^8.5.0":
+    version "8.5.0"
+    resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.5.0.tgz#2531d5e300803aa63279b232c014acf780c981c5"
+    integrity sha512-9bVao7LvyorRGZCw0VmH/dr7Og+NdjYSsKAxB43OQoComFbBgsEpoR9JW6+qSq/ogwVBg8GI2MfAlk4SYI4OLg==
+    dependencies:
+      "@types/node" "*"
+  
   "@types/mime@*":
     version "2.0.3"
     resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.3.tgz#c893b73721db73699943bfc3653b1deb7faa4a3a"
     integrity sha512-Jus9s4CDbqwocc5pOAnh8ShfrnMcPHuJYzVcSUU7lrh8Ni5HuIqX3oilL86p3dlTrk0LzHRCgA/GQ7uNCw6l2Q==
   
+  "@types/morgan@^1.9.2":
+    version "1.9.2"
+    resolved "https://registry.yarnpkg.com/@types/morgan/-/morgan-1.9.2.tgz#450f958a4d3fb0694a3ba012b09c8106f9a2885e"
+    integrity sha512-edtGMEdit146JwwIeyQeHHg9yID4WSolQPxpEorHmN3KuytuCHyn2ELNr5Uxy8SerniFbbkmgKMrGM933am5BQ==
+    dependencies:
+      "@types/node" "*"
+  
   "@types/node@*":
     version "14.14.20"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.20.tgz#f7974863edd21d1f8a494a73e8e2b3658615c340"
     integrity sha512-Y93R97Ouif9JEOWPIUyU+eyIdyRqQR0I8Ez1dzku4hDx34NWh4HbtIc3WNzwB1Y9ULvNGeu5B8h8bVL5cAk4/A==
+  
+  "@types/pg-types@*":
+    version "1.11.5"
+    resolved "https://registry.yarnpkg.com/@types/pg-types/-/pg-types-1.11.5.tgz#1eebbe62b6772fcc75c18957a90f933d155e005b"
+    integrity sha512-L8ogeT6vDzT1vxlW3KITTCt+BVXXVkLXfZ/XNm6UqbcJgxf+KPO7yjWx7dQQE8RW07KopL10x2gNMs41+IkMGQ==
+  
+  "@types/pg@^7.14.7":
+    version "7.14.7"
+    resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.14.7.tgz#b25532a424f58e70432ac31c77507dfb7b9349a8"
+    integrity sha512-ZnMOUidTP6Lwsb0bxHL6PVIL1lVC2CYNQWlA79kQ6nn0rK1/ynvkyN1wsR9pVZaP4WcCNioKT/2aU5UuLIQy2w==
+    dependencies:
+      "@types/node" "*"
+      "@types/pg-types" "*"
   
   "@types/qs@*":
     version "6.9.5"
@@ -3071,3 +3097,10 @@ Lockfile:
     version "3.1.1"
     resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
     integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
+
+Trace: 
+  Error: https://registry.yarnpkg.com/bcrypt/-/bcrypt-5.0.0.tgz: ETIMEDOUT
+      at Timeout._onTimeout (/opt/yarn-v1.5.1/lib/cli.js:133094:19)
+      at ontimeout (timers.js:466:11)
+      at tryOnTimeout (timers.js:304:5)
+      at Timer.listOnTimeout (timers.js:267:5)

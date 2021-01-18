@@ -4,8 +4,10 @@
   "description": "An app that allows a university admin to pick a course for students",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "db-migrate": "ts-node ./src/db/db.ts",
+    "start": "yarn run migrate && yarn run check-types && node build/index.js",
+    "check-types": "tsc",
+    "dev": "nodemon src/index.ts",
+    "migrate": "ts-node ./src/db/db.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
