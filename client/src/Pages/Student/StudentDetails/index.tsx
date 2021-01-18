@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useMappedState } from "redux-react-hook";
 import { getOneStudent } from "Store/actions/student.action";
+import { getCourses } from "Store/actions/course.action";
+import { enrollStudent } from "Store/actions/adminActions.action";
 import Spinner from "react-bootstrap/Spinner";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -13,8 +15,14 @@ import styles from "./style.module.scss";
 const tableHeader: Array<string> = ["Course Name", ""];
 
 interface getOneState {
-  passedId: string;
+  studentId: string;
+  courseId: string;
+  courseName: string;
 }
+
+// interface enrollCourseState {
+//   courseName: string;
+// }
 
 interface Props {
   match: any;
@@ -24,25 +32,69 @@ export default function OneStudent({ match }: Props) {
   const dispatch = useDispatch();
   const student = useMappedState(
     ({ oneStudentReducer }: any) => oneStudentReducer
-  );
+    );
   const loading = student.loading;
+  const courses = useMappedState(
+    ({ courseReducer }: any) => courseReducer
+  );
+  const enroll = useMappedState(
+    ({ adminActionsReducer }: any) => adminActionsReducer
+  );
   const [state, setState] = useState<getOneState>({
-    passedId: "",
+    studentId: "",
+    courseId: "",
+    courseName: "",
   });
+  // const [coursePicked, setCoursePicked] = useState<enrollCourseState>({
+  //   courseName: "",
+  // });
   const [enrollForCourseModal, setEnrollModal] = useState(false);
 
-  const handleCloseEnroll = () => setEnrollModal(false);
-  const handleEnrollModal = () => setEnrollModal(true);
+  const handleEnrollModal = () => {
+    dispatch(getCourses());
+    setEnrollModal(true);
+  }
+
+  const handleCloseEnroll = () => {
+    setState({
+      ...state,
+      courseId: "",
+    })
+    setEnrollModal(false);
+  };
+
+  const setValue = (e: any) =>
+  setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+
+  // const pickHandler = (cosId: string) => {
+  //   setState({
+  //     ...state,
+  //     courseId: cosId,
+  //   })
+  // }
 
   useEffect(() => {
     const id = match.params.id;
     setState({
       ...state,
-      passedId: id,
+      studentId: id,
     });
     // console.log("I got here", id, state)
     dispatch(getOneStudent({ id }));
   }, [dispatch]);
+
+  const enrollCourseAction = (e: any) => {
+    e && e.preventDefault();
+    dispatch(
+      enrollStudent({ ...state }, () => {
+        dispatch(getOneStudent({ id: state.studentId }));
+        handleCloseEnroll();
+      })
+    );
+  };
 
   return (
     <>
@@ -107,18 +159,18 @@ export default function OneStudent({ match }: Props) {
           <div>
             <Form>
               <Form.Group>
-                <Form.Control as="select" size="lg" custom>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
-                  <option>Large select</option>
+                <Form.Control
+                  as="select"
+                  size="lg"
+                  custom
+                  name="courseId"
+                  value={state.courseId}
+                  onChange={setValue}
+                >
+                  <option>select...</option>
+                  {courses && courses.course && courses.course.courses.map((options: any, i: any) => (
+                    <option value={options.course_id}>{options.course_name}</option>
+                  ))}
                 </Form.Control>
               </Form.Group>
             </Form>
@@ -128,8 +180,9 @@ export default function OneStudent({ match }: Props) {
           <Button variant="grey" onClick={handleCloseEnroll}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseEnroll}>
-            Save Changes
+          <Button variant="primary" onClick={enrollCourseAction}
+          disabled={(state.courseId === "" || enroll.loading) && true}>
+            {enroll.loading ? "Enrolling..." : "Enroll"}
           </Button>
         </Modal.Footer>
       </Modal>

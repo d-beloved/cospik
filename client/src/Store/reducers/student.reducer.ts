@@ -25,30 +25,25 @@ const initialState: StudentProps = {
   error: null,
 }
 
-const studentReducer = (state = initialState, action: any): any => {
+export const studentReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case GET_ALLSTUDENT_REQUEST:
     case ADD_STUDENT_REQUEST:
     case EDIT_STUDENT_REQUEST:
-    case GET_STUDENT_REQUEST:
       return { ...state, loading: true };
     case GET_ALLSTUDENT_FAILURE:
     case ADD_STUDENT_FAILURE:
     case EDIT_STUDENT_FAILURE:
-    case GET_STUDENT_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case GET_ALLSTUDENT_SUCCESS:
     case ADD_STUDENT_SUCCESS:
     case EDIT_STUDENT_SUCCESS:
-    case GET_STUDENT_SUCCESS:
       return { ...state, loading: false, error: null, student: action.payload };
 
     default:
       return state;
   }
 }
-
-export default studentReducer;
 
 // export const addStudentReducer = (state = initialState, action: any): any => {
 //   switch (action.type) {
@@ -78,16 +73,16 @@ export default studentReducer;
 //   }
 // }
 
-// export const oneStudentReducer = (state = initialState, action: any): any => {
-//   switch (action.type) {
-//     case GET_STUDENT_REQUEST:
-//       return { ...state, loading: true };
-//     case GET_STUDENT_FAILURE:
-//       return { ...state, loading: false, error: action.payload };
-//     case GET_STUDENT_SUCCESS:
-//       return { ...state, loading: false, error: null, student: action.payload };
+export const oneStudentReducer = (state = initialState, action: any): any => {
+  switch (action.type) {
+    case GET_STUDENT_REQUEST:
+      return { ...state, loading: true };
+    case GET_STUDENT_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+    case GET_STUDENT_SUCCESS:
+      return { ...state, loading: false, error: null, student: action.payload };
 
-//     default:
-//       return state;
-//   }
-// }
+    default:
+      return state;
+  }
+}

@@ -217,7 +217,7 @@ class StudentController {
   static enrollStudentForCourse(req, res) {
     // query to check if the student is enrolled for the course already
     const checkStudentCourse = `SELECT * FROM student_courses
-                                  WHERE student_id = $1 AND course_id = $2`;
+                                  WHERE student_id::text = $1 AND course_id::text = $2`;
 
     const enrollQuery = `INSERT INTO student_courses (student_id, course_id)
                             VALUES ($1, $2)
@@ -266,7 +266,7 @@ class StudentController {
 
   static removeCourseForStudent(req, res) {
     const unenrollQuery = `DELETE FROM student_courses
-                            WHERE student_id = $1 AND course_id = $2
+                            WHERE student_id::text = $1 AND course_id::text = $2
                             RETURNING *`;
 
     pool.connect()

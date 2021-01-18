@@ -42,11 +42,11 @@ export default function InfoTable({ trigger, header, tableData }: Props) {
   });
 
   const loading = useMappedState(
-    ({ updateStudentReducer }: any) => updateStudentReducer
+    ({ studentReducer }: any) => studentReducer
   );
 
   const courseLoading = useMappedState(
-    ({ deleteCourseReducer }: any) => deleteCourseReducer
+    ({ courseReducer }: any) => courseReducer
   );
 
   const updateStudentAction = (e: any) => {

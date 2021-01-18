@@ -43,10 +43,10 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
 
   const user = useMappedState(({ adminReducer }: any) => adminReducer);
   const loading = useMappedState(
-    ({ addStudentReducer }: any) => addStudentReducer
+    ({ studentReducer }: any) => studentReducer
   );
   const courseLoading = useMappedState(
-    ({ addCourseReducer }: any) => addCourseReducer
+    ({ courseReducer }: any) => courseReducer
   );
 
   const handleStudentModal = () => setStudentModal(true);
