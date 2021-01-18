@@ -39,7 +39,6 @@ routes.post('/enroll',
 
 routes.delete('/unenroll',
   authenticate,
-  Validation.trimsRequestBody,
   StudentController.removeCourseForStudent
 )
 

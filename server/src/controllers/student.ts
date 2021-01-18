@@ -273,7 +273,7 @@ class StudentController {
       .then((client)=> {
         client.query({
           text: unenrollQuery,
-          values: [req.body.student_id, req.body.course_id]
+          values: [req.query.student_id, req.query.course_id]
         })
           .then((unenrolled) => {
             client.release();
