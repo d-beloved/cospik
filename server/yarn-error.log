@@ -3105,3 +3105,10 @@ Lockfile:
     version "3.1.1"
     resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
     integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
+
+Trace: 
+  Error: https://registry.yarnpkg.com/bcrypt/-/bcrypt-5.0.0.tgz: ETIMEDOUT
+      at Timeout._onTimeout (/opt/yarn-v1.5.1/lib/cli.js:133094:19)
+      at ontimeout (timers.js:466:11)
+      at tryOnTimeout (timers.js:304:5)
+      at Timer.listOnTimeout (timers.js:267:5)
