@@ -4,10 +4,11 @@
   "description": "An app that allows a university admin to pick a course for students",
   "main": "index.js",
   "scripts": {
-    "start": "yarn run migrate && yarn run check-types && node build/index.js",
+    "start": "yarn run check-types && yarn run migrate && node build/index.js",
     "check-types": "tsc",
     "dev": "nodemon src/index.ts",
-    "migrate": "ts-node ./src/db/db.ts",
+    "dev-migrate": "ts-node ./src/db/db.ts",
+    "migrate": "node ./build/db/db.js",
     "pretest": "NODE_ENV=test yarn run migrate && yarn run seeder",
     "seeder" : "NODE_ENV=test ts-node ./src/seeder.ts",
     "test": "jest --testTimeout=10000 --runInBand --forceExit"

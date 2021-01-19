@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../index';
 
 describe('Auth', () => {
-  afterAll(async (done) => {
+  afterEach(async (done) => {
     await app.close();
     done();
   })

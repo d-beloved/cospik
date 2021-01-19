@@ -120,7 +120,7 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
   // for the pagination data
   const idxOfLastEntry = state.activePage * state.itemsPerPage;
   const idxOfFirstEntry = idxOfLastEntry - state.itemsPerPage;
-  const pagedTableData = tableData.slice(idxOfFirstEntry, idxOfLastEntry);
+  const pagedTableData = tableData?.slice(idxOfFirstEntry, idxOfLastEntry);
 
   return (
     <>
@@ -195,7 +195,7 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
               <Paginate
                 activePage={state.activePage}
                 itemsCountPerPage={state.itemsPerPage}
-                totalItemsCount={tableData.length}
+                totalItemsCount={tableData?.length}
                 pageRangeDisplayed={3}
                 onChange={handlePageChange}
                 itemClass="page-item"

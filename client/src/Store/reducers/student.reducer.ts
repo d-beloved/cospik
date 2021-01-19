@@ -14,13 +14,15 @@ import {
 } from 'Store/constants';
 
 interface StudentProps {
-  students: Object;
+  students: Object[];
+  student: Object;
   loading: boolean;
   error: Object | null;
 }
 
 const initialState: StudentProps = {
-  students: {},
+  students: [],
+  student: {},
   loading: false,
   error: null,
 }
@@ -36,6 +38,7 @@ export const studentReducer = (state = initialState, action: any): any => {
     case EDIT_STUDENT_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case GET_ALLSTUDENT_SUCCESS:
+      return { ...state, loading: false, error: null, students: action.payload };
     case ADD_STUDENT_SUCCESS:
     case EDIT_STUDENT_SUCCESS:
       return { ...state, loading: false, error: null, student: action.payload };
@@ -80,7 +83,7 @@ export const oneStudentReducer = (state = initialState, action: any): any => {
     case GET_STUDENT_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case GET_STUDENT_SUCCESS:
-      return { ...state, loading: false, error: null, student: action.payload };
+      return { ...state, loading: false, error: null, ...action.payload };
 
     default:
       return state;

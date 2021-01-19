@@ -19,8 +19,8 @@ export const getCourses = (action?: () => void,
 
     try {
       const { data: response } = await Axios.get('/course');
-      const { message, ...rest } = response;
-      dispatch(actionCreator(GET_ALLCOURSES_SUCCESS, rest));
+      const { courses } = response;
+      dispatch(actionCreator(GET_ALLCOURSES_SUCCESS, courses));
     } catch (error) {
       errorAction && errorAction();
       dispatch(actionCreator(GET_ALLCOURSES_FAILURE, error.response.data));

@@ -22,8 +22,8 @@ export const getStudents = (action?: () => void,
 
     try {
       const { data: response } = await Axios.get('/student');
-      const { message, ...rest } = response;
-      dispatch(actionCreator(GET_ALLSTUDENT_SUCCESS, rest));
+      const { students } = response;
+      dispatch(actionCreator(GET_ALLSTUDENT_SUCCESS, students));
     } catch (error) {
       errorAction && errorAction();
       dispatch(actionCreator(GET_ALLSTUDENT_FAILURE, error.response.data));

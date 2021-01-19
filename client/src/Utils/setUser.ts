@@ -1,14 +1,16 @@
 import Axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import actionCreator from 'Utils/actionCreator';
-import { ADMIN_SIGN_IN_SUCCESS, LOGOUT_ADMIN } from 'Store/constants';
+import { ADMIN_SIGN_IN_SUCCESS } from 'Store/constants';
+import { logoutAdmin } from 'Store/actions/auth.action';
 
 interface jwtSign {
   exp: any
 }
 
 export const isLoggedIn = () => {
-  const token = localStorage.getItem('token') || '{}';
+  const token = localStorage.getItem('token');
+  if(!token) return false;
   let decoded: jwtSign;
 
   try {
@@ -18,9 +20,10 @@ export const isLoggedIn = () => {
   }
 
   const { exp } = decoded;
+
   const currentDate = new Date();
 
-  return exp * 1000 - currentDate.getTime() > 1;
+  return exp * 1000 > currentDate.getTime();
 };
 
 export const setUser = async (store: any) => {
@@ -42,7 +45,7 @@ export const setUser = async (store: any) => {
       }
       return store.dispatch(actionCreator(ADMIN_SIGN_IN_SUCCESS, user));
     } else {
-      return store.dispatch(actionCreator(LOGOUT_ADMIN));
+      return store.dispatch(logoutAdmin());
     }
   }
 };

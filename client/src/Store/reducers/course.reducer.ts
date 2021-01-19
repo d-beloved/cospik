@@ -11,13 +11,13 @@ import {
 } from 'Store/constants';
 
 interface CourseProps {
-  courses: Object;
+  courses: Object[];
   loading: boolean;
   error: Object | null;
 }
 
 const initialState: CourseProps = {
-  courses: {},
+  courses: [],
   loading: false,
   error: null,
 }
@@ -33,9 +33,10 @@ const courseReducer = (state = initialState, action: any): any => {
     case DELETE_COURSE_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case GET_ALLCOURSES_SUCCESS:
+      return { ...state, loading: false, error: null, courses: action.payload };
     case ADD_COURSE_SUCCESS:
     case DELETE_COURSE_SUCCESS:
-      return { ...state, loading: false, error: null, course: action.payload };
+      return { ...state, loading: false, error: null};
 
     default:
       return state;

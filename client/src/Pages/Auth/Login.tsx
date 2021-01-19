@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, Link } from 'react-router-dom';
 import { useDispatch, useMappedState } from "redux-react-hook";
 import { adminLogin } from "Store/actions/auth.action";
@@ -19,9 +19,7 @@ export default function Login() {
     username: "",
     password: "",
   });
-  const { loading } = useMappedState(({ adminReducer }: any) => ({
-    loading: adminReducer.loading,
-  }));
+  const { loading, isAuthenticated } = useMappedState(({ adminReducer }: any) => adminReducer);
 
   const signInAction = (e: any) => {
     e && e.preventDefault();
@@ -37,6 +35,10 @@ export default function Login() {
       ...state,
       [e.target.name]: e.target.value,
     });
+
+  useEffect(() => {
+    isAuthenticated && history.push("/students")
+  }, [isAuthenticated, history]);
 
   return (
     <div className={styles.auth}>

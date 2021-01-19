@@ -30,11 +30,12 @@ interface Props {
 
 export default function OneStudent({ match }: Props) {
   const dispatch = useDispatch();
-  const student = useMappedState(
+  const {student, enrolled_courses, loading} = useMappedState(
     ({ oneStudentReducer }: any) => oneStudentReducer
     );
-  const loading = student.loading;
-  const courses = useMappedState(
+  console.log('heree', student)
+  // const loading = student.loading;
+  const { courses } = useMappedState(
     ({ courseReducer }: any) => courseReducer
   );
   const enroll = useMappedState(
@@ -100,24 +101,24 @@ export default function OneStudent({ match }: Props) {
       <div className={styles.detail}>
         <Header goTo="Students" goToLink="/students" />
         <div className={styles.content}>
-          {loading ? (
+          {loading && (
             <Spinner className={styles.loader} animation="grow" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
-          ) : (
+          )}
             <>
-              {student && student.student && (
+              {(student.email || !loading) && (
                 <div className={styles.top}>
                   <div className={styles.student}>
-                    <h1>{`${student.student.student.firstname} ${student.student.student.lastname}`}</h1>
-                    <p>{student.student.student.email}</p>
+                    <h1>{`${student.firstname} ${student.lastname}`}</h1>
+                    <p>{student.email}</p>
                   </div>
                   <div className={styles.info}>
                     <p className={styles.numb}>
-                      {student.student.enrolled_courses.length}
+                      {enrolled_courses?.length}
                     </p>
                     <p className={styles.text}>
-                      {student.student.enrolled_courses.length > 1
+                      {enrolled_courses?.length > 1
                         ? "ENROLLED COURSES"
                         : "ENROLLED COURSE"}
                     </p>
@@ -131,17 +132,16 @@ export default function OneStudent({ match }: Props) {
                     Enroll Course
                   </p>
                 </div>
-                {student && student.student && (
+                {student && enrolled_courses && (
                   <Table
                     trigger="oneStudent"
                     header={tableHeader}
-                    tableData={student.student.enrolled_courses}
+                    tableData={enrolled_courses}
                     parameter={state.studentId}
                   />
                 )}
               </div>
             </>
-          )}
         </div>
         <Footer />
       </div>
@@ -168,7 +168,7 @@ export default function OneStudent({ match }: Props) {
                   onChange={setValue}
                 >
                   <option>select...</option>
-                  {courses && courses.course && courses.course.courses.map((options: any, i: any) => (
+                  {courses?.map((options: any, i: any) => (
                     <option value={options.course_id}>{options.course_name}</option>
                   ))}
                 </Form.Control>
