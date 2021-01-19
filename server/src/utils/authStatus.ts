@@ -4,23 +4,23 @@ const secretKey = process.env.JWT_SECRET;
 
 
 // checks if a user is already logged in
-export const loginStatus = (req, res, next) => {
-  if (req.headers.authorization) {
-    try {
-      const token = req.headers.authorization.split(' ')[0];
-      const decoded = jwt.verify(token, secretKey);
-      req.userData = decoded;
-      if (req.userData !== null) {
-        return res.status(200).json({ message: 'You are already logged in', success: true, authToken: token, user: req.userData });
-      }
-    } catch (error) {
-      return res.status(401)
-        .json({ message: 'Token is invalid, Please login', success: false });
-    }
-  } else {
-    next();
-  };
-}
+// export const loginStatus = (req, res, next) => {
+//   if (req.headers.authorization) {
+//     try {
+//       const token = req.headers.authorization.split(' ')[0];
+//       const decoded = jwt.verify(token, secretKey);
+//       req.userData = decoded;
+//       if (req.userData !== null) {
+//         return res.status(200).json({ message: 'You are already logged in', success: true, authToken: token, user: req.userData });
+//       }
+//     } catch (error) {
+//       return res.status(401)
+//         .json({ message: 'Token is invalid, Please login', success: false });
+//     }
+//   } else {
+//     next();
+//   };
+// }
 
 // Authenticates every action to be carried out on the app and
 // checks the validity of the token

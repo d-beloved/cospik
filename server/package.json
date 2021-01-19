@@ -9,8 +9,8 @@
     "dev": "nodemon src/index.ts",
     "migrate": "ts-node ./src/db/db.ts",
     "pretest": "NODE_ENV=test yarn run migrate && yarn run seeder",
-    "seeder" : "NODE_ENV=test ts-node ./src/__tests__/seeder.ts",
-    "test": "jest --testTimeout=10000"
+    "seeder" : "NODE_ENV=test ts-node ./src/seeder.ts",
+    "test": "jest --testTimeout=10000 --runInBand --forceExit"
   },
   "keywords": [
     "nodejs",

@@ -1,8 +1,8 @@
 import { Pool } from 'pg';
 import bcrypt from 'bcrypt';
-import { connectionString } from '../db/dbConfig';
+import { connectionString } from './db/dbConfig';
 
-const adminPassword = bcrypt.hashSync('ispassword', 10);
+export const adminPassword = bcrypt.hashSync('ispassword', 10);
 
 const adminSql = `INSERT INTO admin (username, password)VALUES('admin', '${adminPassword}')`;
 const studentSql = `INSERT INTO students (student_id, firstname, lastname, email)VALUES('53d847d4-32df-4e68-b236-67e1137f7f35', 'firstOfThem', 'lastOneThere', 'myspecial@mail.com')`;
