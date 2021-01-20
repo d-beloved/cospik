@@ -82,7 +82,7 @@ COSPIK is the right solution for you, it offers the following functionality:
   * check the `.env-sample` files inside `/server` folder and on the `root` of the app, fill the information as required
   * When running the app for the first time, run
       ```sh
-        docker compose up --build
+        docker-compose up --build
       ```
       to build the images and start the container; for subsequent runs, you need to remove the `--build` flag
 

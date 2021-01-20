@@ -1,22 +1,31 @@
-version: '3.1'
+version: '3.7'
 
 services:
   client:
-    build: .
+    container_name: cospik_client
+    build:
+      context: client/.
+      dockerfile: Dockerfile
     volumes:
-      - "./client:/app"
+      - '.:/app'
+      - '/app/node_modules'
     ports:
-      - "3031:3000"
+      - "3000:3000"
     depends_on:
       - api
 
   api:
-    build: .
-    volumes:
-      - "./server:/app"
-      - "/app/node_modules"
+    container_name: cospik_api
+    build:
+      context: server/.
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      DB_HOST: host.docker.internal
     ports:
-      - "3003:3110"
+      - "3110:3110"
+    volumes:
+      - /app/node_modules
     depends_on:
       - db
 

@@ -67,6 +67,7 @@ export default function OneStudent({ match }: Props) {
     });
     dispatch(getOneStudent({ id }));
     dispatch(getCourses());
+  // eslint-disable-next-line
   }, [dispatch]);
 
   const enrollCourseAction = (e: any) => {

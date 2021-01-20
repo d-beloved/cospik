@@ -33,13 +33,7 @@ class StudentController {
           })
           .catch((err) => {
             client.release();
-            if(err) {
-              res.status(400).send({
-                message: 'Please try again',
-                err,
-                success: false
-              });
-            }
+            throw(err);
           });
       });
   }
@@ -60,13 +54,7 @@ class StudentController {
         })
         .catch((err) => {
           client.release();
-          if(err) {
-            res.status(400).send({
-              message: 'Something went wrong',
-              err,
-              success: false
-            });
-          }
+          console.log(err);
         });
       });
   }
@@ -152,12 +140,7 @@ class StudentController {
           })
           .catch((err) => {
             client.release();
-            if (err) {
-              res.status(500).send({
-                message: 'Something went wrong',
-                err
-              });
-            }
+            console.log(err);
           });
       });
   }
@@ -201,12 +184,7 @@ class StudentController {
                     })
                     .catch((err) => {
                       client.release();
-                      if (err) {
-                        res.status(500).send({
-                          message: 'Something went wrong',
-                          err
-                        });
-                      }
+                      console.log(err);
                     });
                 });
             }
@@ -247,12 +225,7 @@ class StudentController {
                     })
                     .catch((err) => {
                       client.release();
-                      if (err) {
-                        res.status(500).send({
-                          message: 'Something went wrong',
-                          err
-                        });
-                      }
+                      console.log(err);
                     });
                 });
             } else {
@@ -284,12 +257,7 @@ class StudentController {
           })
           .catch((err) => {
             client.release();
-            if (err) {
-              res.status(500).send({
-                message: 'Something went wrong',
-                err
-              });
-            }
+            console.log(err);
           });
       });
   }

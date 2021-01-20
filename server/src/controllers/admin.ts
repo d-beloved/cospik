@@ -49,23 +49,11 @@ class AdminController {
           })
           .catch((err) => {
             client.release();
-            if (err) {
-              res.status(400).send({
-                message: 'Sorry, please try again',
-                err,
-                success: false
-              });
-            }
+            console.log(err);
           });
       })
       .catch((err) => {
-        if (err) {
-          res.status(400).send({
-            message: 'It\'s not you, its us, we\'re sorry',
-            err,
-            success: false
-          });
-        }
+        console.log(err);
       });
   }
 
@@ -116,9 +104,7 @@ class AdminController {
           })
           .catch((err) => {
             client.release();
-            if (err) {
-              res.status(400).send({ message: 'An error occurred', success: false, err });
-            }
+            console.log(err);
           });
       });
   }

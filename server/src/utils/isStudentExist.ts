@@ -24,12 +24,7 @@ const ifStudentExists = (req, res, next) => {
           });
         })
         .catch((err) => {
-          if (err) {
-            res.status(500).send({
-              message: 'An error occured',
-              success: false
-            });
-          }
+          console.log(err);
         });
     });
 };

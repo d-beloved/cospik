@@ -27,13 +27,7 @@ class CourseController {
           })
           .catch((err) => {
             client.release();
-            if(err) {
-              res.status(400).send({
-                message: 'Please try again',
-                err,
-                success: false
-              });
-            }
+            console.log(err);
           });
       });
   }
@@ -54,13 +48,7 @@ class CourseController {
         })
         .catch((err) => {
           client.release();
-          if(err) {
-            res.status(400).send({
-              message: 'Something went wrong',
-              err,
-              success: false
-            });
-          }
+          console.log(err);
         });
       });
   }
@@ -85,12 +73,7 @@ class CourseController {
           })
           .catch((err) => {
             client.release();
-            if (err) {
-              res.status(500).send({
-                message: 'Something went wrong',
-                err
-              });
-            }
+            console.log(err);
           });
       });
   }
