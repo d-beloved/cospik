@@ -49,7 +49,7 @@ describe('Course', () => {
     });
   });
 
-  describe.only('Delete a course', () => {
+  describe('Delete a course', () => {
     it('Should delete a course successfully', async () => {
       const res = await request(app)
         .delete(`/api/course/${courseId}`)

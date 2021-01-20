@@ -9,8 +9,10 @@
     "dev": "nodemon src/index.ts",
     "dev-migrate": "ts-node ./src/db/db.ts",
     "migrate": "node ./build/db/db.js",
-    "pretest": "NODE_ENV=test yarn run migrate && yarn run seeder",
-    "seeder" : "NODE_ENV=test ts-node ./src/seeder.ts",
+    "pretest": "NODE_ENV=test yarn run dev-migrate && yarn run seeder",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "coverage": "nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
+    "seeder": "NODE_ENV=test ts-node ./src/seeder.ts",
     "test": "jest --testTimeout=10000 --runInBand --forceExit"
   },
   "keywords": [
@@ -32,8 +34,10 @@
     "@types/morgan": "^1.9.2",
     "@types/pg": "^7.14.7",
     "@types/supertest": "^2.0.10",
+    "coveralls": "^3.1.0",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
+    "nyc": "^15.1.0",
     "supertest": "^6.1.1",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
