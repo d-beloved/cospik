@@ -7,12 +7,12 @@
     "start": "yarn run check-types && yarn run migrate && node build/index.js",
     "check-types": "tsc",
     "dev": "nodemon src/index.ts",
-    "dev-migrate": "ts-node ./src/db/db.ts",
+    "dev-migrate": "NODE_ENV=test ts-node ./src/db/db.ts",
     "migrate": "node ./build/db/db.js",
-    "pretest": "NODE_ENV=test yarn run dev-migrate && yarn run seeder",
+    "pretest": "yarn run dev-migrate && yarn run dev-seeder",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
-    "seeder": "NODE_ENV=test ts-node ./src/seeder.ts",
+    "dev-seeder": "NODE_ENV=test ts-node ./src/seeder.ts",
     "test": "jest --testTimeout=10000 --runInBand --forceExit"
   },
   "keywords": [

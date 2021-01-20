@@ -1,16 +1,21 @@
 language: node_js
 node_js:
- - "stable"
-script:
- - yarn test
+  - "node"
+
 services:
-  -postgresql
+  - postgresql
+
+install:
+- cd server
+- yarn add -g coveralls typescript ts-node
+- yarn -q --no-color --no-progress
+
 before_script:
-  - psql -c 'CREATE DATABASE travis;' -U postgres
-before_install:
- - export CHROME_BIN=/usr/bin/google-chrome
- - export DISPLAY=:99.0
- - sh -e /etc/init.d/xvfb start
+  - psql -c 'CREATE DATABASE travis_cospik;' -U postgres
+
+script:
+  - yarn test
+
 after_success:
   - yarn run coveralls
   - yarn run coverage
