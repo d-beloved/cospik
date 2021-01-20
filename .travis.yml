@@ -7,7 +7,7 @@ services:
 
 install:
 - cd server
-- yarn add -g coveralls typescript ts-node
+- yarn add -g typescript ts-node
 - yarn -q --no-color --no-progress
 
 before_script:
@@ -17,5 +17,5 @@ script:
   - yarn test
 
 after_success:
-  - yarn run coveralls
-  - yarn run coverage
+  - yarn run report-coverage
+  - yarn run codeclimate-report
