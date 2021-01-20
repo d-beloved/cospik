@@ -1,104 +1,99 @@
-# COSPIK (A University Admin Application)
-
-An app that allows a university admin to pick a course for students and so much more
-
 [![Build Status](https://www.travis-ci.com/d-beloved/cospik.svg?branch=main)](https://www.travis-ci.com/d-beloved/cospik)
-[![Coverage Status](https://coveralls.io/repos/github/d-beloved/cospik/badge.svg?branch=main)](https://coveralls.io/github/d-beloved/cospik?branch=main)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/db33f2a9853285631d2b/test_coverage)](https://codeclimate.com/github/d-beloved/cospik/test_coverage)
 
-## Made With
-  ### UI
-    * HTML for writing the webpage
-    * CSS for styling
-    * Javascript to add some behaviour
-  
-  ### Server
-    * Nodejs for server-side logic
-    * Babel for transpiling
-    * Express for api routes implementation
-    * Heroku for hosting services
-    * PostgreSql for the App database
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/d-beloved/cospik">
+    <img src="client/src/Assets/images/COSPIK.png" alt="Logo" width="80" height="40">
+  </a>
 
-  ### Continuous Integration
-    * Travis CI & Codeclimate for test automation
-    * Coveralls for test coverage report
-  
-  ### Test-Driven Development
-    * Mocha & Chai for api route testing
+  <h3 align="center">A University Admin Application</h3>
 
-## Installation.
+  <p align="center">An app that allows a university admin to pick a course for students and so much more</p>
+</p>
+
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation-using-docker">Installation using Docker</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+<p>
+  <a href="https://github.com/d-beloved/cospik">
+    <img src="client/src/Assets/images/cospik-screenshot.png" alt="Logo" width="800" height="400">
+  </a>
+</p>
+
+Imagine an Admin for a university who wants to manage student course enrollment and unenrollement for a school session seamlessly,
+COSPIK is the right solution for you, it offers the following functionality:
+
+### Features
+* An admin can signup and login
+* List of students can be seen in a paginated table
+* New students can be added
+* Student name can be edited
+* Available courses can be viewed in a paginated table
+* New courses can be added to the app
+* Courses can be deleted from the app
+* A student information showing their enrolled courses can be viewed
+* Admin can enroll(add) and unenroll(remove) student for a course
+
+### Built With
+
+* [Typescript](https://www.typescriptlang.org)
+* [NodeJs](https://nodejs.org/en/)
+* [ExpressJs](https://expressjs.com/)
+* [ReactJs](https://reactjs.org/)
+* [Redux](https://redux.js.org/)
+* [React-Bootstrap](https://react-bootstrap.netlify.app/)
+* [Jest](https://jestjs.io/)
+* [PostgreSql](https://www.postgresql.org/)
+
+<!-- GETTING STARTED -->
+## Getting Started
+  ### Installation using Docker
+
   * Install [Nodejs](https://nodejs.org/en/download/)
-  * Clone this repo ``` git clone https://github.com/d-beloved/WEconnect.git ```
-  * Run ```npm install``` to install the required dependencies
-  * Run ```npm test``` to fireup the tests
-  * Navigate to http://localhost:3110/api/v1/
+  * Install [Docker](https://www.docker.com/products/docker-desktop) if you don't have it installed on your system
+  * Clone this repo
+      ```sh
+        git clone https://github.com/d-beloved/cospik
+      ```
+  * check the `.env-sample` files inside `/server` folder and on the `root` of the app, fill the information as required
+  * When running the app for the first time, run
+      ```sh
+        docker compose up --build
+      ```
+      to build the images and start the container; for subsequent runs, you need to remove the `--build` flag
 
-## Features of the template
-* Users can Signup and log in on the app.
-* Drivers can add ride offers..
-* Passengers can view all available ride offers.
-* Passengers can see the details of a ride offer and request to join the ride. E.g What date
-the ride leaves, where it is headed e.t.c
-* Passengers can make a request for an available ride
-* Drivers can view the requests to the ride offer they created.
-* Drivers can either accept or reject a ride request.
+<!-- USAGE EXAMPLES -->
+## Usage
 
-## Available APIs
-<table>
-  <tr>
-      <th>HTTP REQUEST VERB</th>
-      <th>API ENDPOINT/PATH</th>
-      <th>ACTION</th>
-  </tr>
-  <tr>
-      <td>GET</td>
-      <td>/api/v1/</td>
-      <td>Welcomes users to the application</td>
-  </tr>
-  <tr>
-      <td>POST</td>
-      <td>/api/v1/auth/signup</td>
-      <td>Registers a new user on the app</td>
-  </tr>
-  <tr>
-      <td>POST</td>
-      <td>/api/v1/auth/login</td>
-      <td>Logs in a registered user</td>
-  </tr>
-  <tr>
-      <td>POST</td>
-      <td>/api/v1/users/rides</td>
-      <td>Allows users to create ride offers</td>
-  </tr>
-  <tr>
-      <td>GET</td>
-      <td>/api/v1/rides</td>
-      <td>Gets all avalaible ride offers in the app</td>
-  </tr>
-  <tr>
-      <td>GET</td>
-      <td>/api/v1/rides/:rideId</td>
-      <td>Gets one ride offer in the app</td>
-  </tr>
-  <tr>
-      <td>POST</td>
-      <td>/api/v1/rides/:rideId/requests</td>
-      <td>Makes a request for a ride offer</td>
-  </tr>
-  <tr>
-      <td>GET</td>
-      <td>/api/v1/users/rides/:rideId/requests</td>
-      <td>Get all request for a ride offer</td>
-  </tr>
-  <tr>
-      <td>PUT</td>
-      <td>/api/v1/users/rides/:rideId/requests/:requestId</td>
-      <td>Accepts or rejects a ride offer</td>
-  </tr>
-</table>
+Please refer to the [Documentation](https://documenter.getpostman.com/view/2841318/TVzYgEWg) for information on the available APIs
 
-For more details on how to use this API, check the **Documentation** out [ here ](https://ayo-ride-my-way-v1.herokuapp.com/api-docs).
+<!-- LICENSE -->
+## License
 
-## License and Copyright
+Distributed under the MIT License. See [MIT License](LICENSE) for more information.
+
 &copy; Ayodeji Moronkeji
-
-Licensed under the [MIT License](LICENSE).
