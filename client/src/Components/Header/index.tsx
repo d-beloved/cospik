@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useMappedState } from "redux-react-hook";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { logoutAdmin } from "Store/actions/auth.action";
 import { createStudent, getStudents } from "Store/actions/student.action";
 import { createCourse, getCourses } from "Store/actions/course.action";
@@ -130,7 +132,7 @@ export default function Header({ action, goTo, goToLink, trigger }: Props) {
             <Navbar.Text id={styles.user}>{user.user.username}</Navbar.Text>
             {user.isAuthenticated && (
               <Navbar.Text onClick={logout} id={styles.logout}>
-                logout
+                <FontAwesomeIcon icon={faSignOutAlt} size='lg' />
               </Navbar.Text>
             )}
           </Nav>

@@ -41,40 +41,12 @@ export const studentReducer = (state = initialState, action: any): any => {
       return { ...state, loading: false, error: null, students: action.payload };
     case ADD_STUDENT_SUCCESS:
     case EDIT_STUDENT_SUCCESS:
-      return { ...state, loading: false, error: null, student: action.payload };
+      return { ...state, loading: false, error: null };
 
     default:
       return state;
   }
 }
-
-// export const addStudentReducer = (state = initialState, action: any): any => {
-//   switch (action.type) {
-//     case ADD_STUDENT_REQUEST:
-//       return { ...state, loading: true };
-//     case ADD_STUDENT_FAILURE:
-//       return { ...state, loading: false, error: action.payload };
-//     case ADD_STUDENT_SUCCESS:
-//       return { ...state, loading: false, error: null, student: action.payload };
-
-//     default:
-//       return state;
-//   }
-// }
-
-// export const updateStudentReducer = (state = initialState, action: any): any => {
-//   switch (action.type) {
-//     case EDIT_STUDENT_REQUEST:
-//       return { ...state, loading: true };
-//     case EDIT_STUDENT_FAILURE:
-//       return { ...state, loading: false, error: action.payload };
-//     case EDIT_STUDENT_SUCCESS:
-//       return { ...state, loading: false, error: null, student: action.payload };
-
-//     default:
-//       return state;
-//   }
-// }
 
 export const oneStudentReducer = (state = initialState, action: any): any => {
   switch (action.type) {

@@ -3,7 +3,7 @@
 .notify {
   position: fixed;
   top: 0;
-  right: 40px;
+  right: 15px;
 
   display: flex;
   flex-direction: column;
@@ -47,17 +47,6 @@
     &:hover {
       box-shadow: 0px 0px 1px 1px #ccc;
     }
-
-    // &:after {
-    //   content: 'x';
-    //   color: #eee;
-    //   font-weight: bold;
-    //   height: 100%;
-    //   width: 100%;
-    //   display: flex;
-    //   justify-content: center;
-    //   align-items: center;
-    // }
   }
   .img {
     width: 70px;
@@ -66,7 +55,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: green;
+    background: #3d58f5;
     border-radius: 5px 0 0 5px;
 
     svg {
@@ -86,7 +75,7 @@
     span {
       font-weight: bold;
       text-transform: capitalize;
-      color: green;
+      color: #3d58f5;
     }
     p {
       margin: 5px 0;

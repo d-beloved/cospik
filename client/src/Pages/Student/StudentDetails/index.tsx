@@ -20,10 +20,6 @@ interface getOneState {
   courseName: string;
 }
 
-// interface enrollCourseState {
-//   courseName: string;
-// }
-
 interface Props {
   match: any;
 }
@@ -31,10 +27,7 @@ interface Props {
 export default function OneStudent({ match }: Props) {
   const dispatch = useDispatch();
   const {student, enrolled_courses, loading} = useMappedState(
-    ({ oneStudentReducer }: any) => oneStudentReducer
-    );
-  console.log('heree', student)
-  // const loading = student.loading;
+    ({ oneStudentReducer }: any) => oneStudentReducer);
   const { courses } = useMappedState(
     ({ courseReducer }: any) => courseReducer
   );
@@ -46,11 +39,8 @@ export default function OneStudent({ match }: Props) {
     courseId: "",
     courseName: "",
   });
-  // const [coursePicked, setCoursePicked] = useState<enrollCourseState>({
-  //   courseName: "",
-  // });
-  const [enrollForCourseModal, setEnrollModal] = useState(false);
 
+  const [enrollForCourseModal, setEnrollModal] = useState(false);
   const handleEnrollModal = () => {
     setEnrollModal(true);
   }
@@ -68,13 +58,6 @@ export default function OneStudent({ match }: Props) {
       ...state,
       [e.target.name]: e.target.value,
     });
-
-  // const pickHandler = (cosId: string) => {
-  //   setState({
-  //     ...state,
-  //     courseId: cosId,
-  //   })
-  // }
 
   useEffect(() => {
     const id = match.params.id;
@@ -102,9 +85,11 @@ export default function OneStudent({ match }: Props) {
         <Header goTo="Students" goToLink="/students" />
         <div className={styles.content}>
           {loading && (
-            <Spinner className={styles.loader} animation="grow" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
+            <div className={styles.wraploader}>
+              <Spinner className={styles.loader} animation="grow" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
           )}
             <>
               {(student.email || !loading) && (

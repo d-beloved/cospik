@@ -31,7 +31,6 @@ const DropItem = ({ title, body, type, index }: dropItemProps) => {
     >
       <div className={styles.img}>
         {type === 'error' ? <FaTimes /> : <FaCheck />}
-        {/* <img src={type === "error" ? close : check} alt="icon" /> */}
       </div>
       <div className={styles.body}>
         <div>

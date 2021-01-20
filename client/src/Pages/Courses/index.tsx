@@ -15,7 +15,6 @@ const tableHeader: Array<string> = [
 export default function AllStudents() {
   const dispatch = useDispatch();
   const {courses, loading} = useMappedState(({ courseReducer }: any) => courseReducer);
-  // const loading = courses.loading;
 
   useEffect(() => {
     dispatch(getCourses());
@@ -36,16 +35,20 @@ export default function AllStudents() {
             <hr />
           </div>
           {loading && (
-            <Spinner className={styles.loader} animation="grow" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
+            <div className={styles.wraploader}>
+              <Spinner className={styles.loader} animation="grow" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
           )}{" "}
           {(courses.length || !loading) && (
-            <InfoTable
-              trigger="course"
-              header={tableHeader}
-              tableData={courses}
-            />
+            <div id={styles.around}>
+              <InfoTable
+                trigger="course"
+                header={tableHeader}
+                tableData={courses}
+              />
+            </div>
           )}
         </div>
         <Footer />

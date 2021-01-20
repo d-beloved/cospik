@@ -49,5 +49,10 @@
 
   #user {
     font-weight: bolder;
+    text-transform: capitalize;
+
+    @include desktop {
+      margin-right: 15px;
+    }
   }
 }

@@ -38,10 +38,8 @@ export const setUser = async (store: any) => {
     const token = localStorage.getItem('token');
     const valid = isLoggedIn();
     if (valid) {
-      // console.log('I am', valid)
       if (token) {
         Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // console.log('I got here', Axios.defaults.headers.common['Authorization']);
       }
       return store.dispatch(actionCreator(ADMIN_SIGN_IN_SUCCESS, user));
     } else {

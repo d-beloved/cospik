@@ -37,16 +37,3 @@ const adminActionsReducer = (state = initialState, action: any): any => {
 }
 
 export default adminActionsReducer;
-// export const unenrollStudentReducer = (state = initialState, action: any): any => {
-//   switch (action.type) {
-//     case UNENROLL_COURSE_REQUEST:
-//       return { ...state, loading: true };
-//     case UNENROLL_COURSE_FAILURE:
-//       return { ...state, loading: false, error: action.payload };
-//     case UNENROLL_COURSE_SUCCESS:
-//       return { ...state, loading: false, error: null, student: action.payload };
-
-//     default:
-//       return state;
-//   }
-// }

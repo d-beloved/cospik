@@ -20,7 +20,6 @@ export default function AllStudents() {
   const { students, loading } = useMappedState(
     ({ studentReducer }: any) => studentReducer
   );
-  // const loading = students.loading;
 
   useEffect(() => {
     dispatch(getStudents());
@@ -41,9 +40,11 @@ export default function AllStudents() {
             <hr />
           </div>
           {loading && (
-            <Spinner className={styles.loader} animation="grow" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
+            <div className={styles.wraploader}>
+              <Spinner className={styles.loader} animation="grow" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
           )}
           {(students.length || !loading) && (
             <InfoTable

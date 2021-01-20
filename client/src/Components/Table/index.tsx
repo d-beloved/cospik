@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useMappedState } from "redux-react-hook";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faUserMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { updateStudent, getStudents, getOneStudent } from "Store/actions/student.action";
 import { deleteCourse, getCourses } from "Store/actions/course.action";
 import { unenrollStudent } from "Store/actions/adminActions.action";
@@ -32,7 +34,6 @@ interface studentState {
 export default function InfoTable({ trigger, header, tableData, parameter }: Props) {
   const dispatch = useDispatch();
   const [editStudentModal, setStudentModal] = useState(false);
-  // const [editCourseModal, setCourseModal] = useState(false);
   const [state, setState] = useState<tableState>({
     activePage: 1,
     itemsPerPage: 6,
@@ -50,10 +51,6 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
   const courseLoading = useMappedState(
     ({ courseReducer }: any) => courseReducer
   );
-
-  const oneStudent = useMappedState(
-    ({ oneStudentReducer }: any) => oneStudentReducer
-    );
 
   const unenroll = useMappedState(
     ({ adminActionsReducer }: any) => adminActionsReducer
@@ -109,10 +106,6 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
     setStudentModal(false);
   };
 
-  // const handleDeleteCourse = () => setCourseModal(true);
-
-  // const handleCloseCourse = () => setCourseModal(false);
-
   const handlePageChange = (pageNumber: number) => {
     setState({ ...state, activePage: pageNumber });
   };
@@ -154,7 +147,7 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
                         <span
                           onClick={() => handleStudentModal(entry.student_id)}
                         >
-                          Edit
+                          <FontAwesomeIcon icon={faEdit} size='lg' />
                         </span>
                       </td>
                     </tr>
@@ -169,7 +162,7 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
                           id={courseLoading.loading && styles.dont}
                           onClick={() => deleteCourseAction(entry.course_id)}
                         >
-                          Delete
+                          <FontAwesomeIcon icon={faTrash} size='lg' />
                         </span>
                       </td>
                     </tr>
@@ -184,7 +177,7 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
                           id={unenroll.loading && styles.dont}
                           onClick={() => unenrollStudentAction(entry.cos_id)}
                         >
-                          unenroll
+                          <FontAwesomeIcon icon={faUserMinus} size='lg' />
                         </span>
                       </td>
                     </tr>
@@ -272,35 +265,6 @@ export default function InfoTable({ trigger, header, tableData, parameter }: Pro
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* Update course modal */}
-      {/* <Modal
-        show={editCourseModal}
-        onHide={handleCloseCourse}
-        backdrop="static"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Course Name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            <Form className={styles.form}>
-              <Form.Group controlId="courseName">
-                <Form.Label>Course Name</Form.Label>
-                <Form.Control type="text" defaultValue="current name" />
-              </Form.Group>
-            </Form>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="gray" onClick={handleCloseCourse}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleCloseCourse}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
     </>
   );
 }
